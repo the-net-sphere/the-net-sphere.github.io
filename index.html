@@ -12,6 +12,19 @@
             text-align: center;
             margin-top: 50px;
         }
+        .spinner {
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #3498db;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+            margin: auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -45,13 +58,13 @@
     </form>
 
     <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
         <h2>Scraping Started</h2>
     </div>
 
     <div id="results" class="results hidden">
         <h2>Results</h2>
-        <div id="plot1"><img src="docs/assets/auguste_piot.jpg" alt="Dummy Plot 1"></div>
-        <div id="plot2"><img src="docs/assets/cesar_dufournet.jpg" alt="Dummy Plot 2"></div>
+        <div id="plot1"><img src="docs/assets/insights.png" alt="Dummy Plot 1"></div>
     </div>
 
     <script>
