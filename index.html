@@ -23,6 +23,19 @@
             font-size: 24px;
             color: white;
         }
+        .spinner {
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #3498db;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+            margin: auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -56,7 +69,7 @@
     </form>
 
     <div id="loading" class="loading hidden">
-        <img src="your-loading-gif-url.gif" alt="Loading...">
+        <div class="spinner"></div>
         <h2>Scraping Started</h2>
     </div>
 
@@ -140,10 +153,10 @@
 
             // Top Posts List
             var topPosts = [
-                { platform: 'Instagram', username: '@user1', content: 'Great product!', reactions: 150, sentiment: 0.8 },
-                { platform: 'LinkedIn', username: '@user2', content: 'Not satisfied with the service.', reactions: 50, sentiment: -0.6 },
-                { platform: 'Meta', username: '@user3', content: 'Average experience.', reactions: 75, sentiment: -0.2 },
-                { platform: 'X', username: '@user4', content: 'Excellent support!', reactions: 200, sentiment: 0.9 }
+                { platform: 'Instagram', username: '@zuck', content: 'Great product!', reactions: 150, sentiment: 0.8 },
+                { platform: 'LinkedIn', username: '@babyboss', content: 'Not satisfied with the service.', reactions: 50, sentiment: -0.6 },
+                { platform: 'Meta', username: '@therock', content: 'Average experience.', reactions: 75, sentiment: -0.2 },
+                { platform: 'X', username: '@melonmusk', content: 'Excellent support!', reactions: 200, sentiment: 0.9 }
             ];
             var topPostsList = document.getElementById('topPosts');
             topPosts.forEach(function(post) {
