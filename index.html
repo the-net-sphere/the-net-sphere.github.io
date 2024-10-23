@@ -63,6 +63,14 @@
             max-width: 45%;
             margin: 10px;
         }
+        .top-posts-container {
+            text-align: center;
+        }
+        .top-posts {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -107,8 +115,11 @@
             <div id="platformTrafficShares"></div>
             <div id="averageSentimentScore"></div>
             <div id="sentimentEvolution"></div>
-        <h3>Top Posts</h3>
-        <ul id="topPosts"></ul>
+        </div>
+        <div class="top-posts-container">
+            <h3>Top Posts</h3>
+            <div id="topPosts" class="top-posts"></div>
+        </div>
     </div>
 
     <script>
@@ -200,13 +211,6 @@
                 { platform: 'LinkedIn', username: '@babyboss', content: 'Not satisfied with the service.', reactions: 50, sentiment: -0.6 },
                 { platform: 'Meta', username: '@therock', content: 'Average experience.', reactions: 75, sentiment: -0.2 },
                 { platform: 'X', username: '@melonmusk', content: 'Excellent support!', reactions: 200, sentiment: 0.9 }
-            ];
-            // Top Posts List
-            var topPosts = [
-                { platform: 'Instagram', username: '@user1', content: 'Great product!', reactions: 150, sentiment: 0.8 },
-                { platform: 'LinkedIn', username: '@user2', content: 'Not satisfied with the service.', reactions: 50, sentiment: -0.6 },
-                { platform: 'Meta', username: '@user3', content: 'Average experience.', reactions: 75, sentiment: -0.2 },
-                { platform: 'X', username: '@user4', content: 'Excellent support!', reactions: 200, sentiment: 0.9 }
             ];
             var topPostsContainer = document.getElementById('topPosts');
             topPosts.forEach(function(post) {
