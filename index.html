@@ -53,6 +53,16 @@
         .tile p {
             margin: 4px 0;
         }
+        .visualization-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .visualization {
+            flex: 1 1 45%;
+            max-width: 45%;
+            margin: 10px;
+        }
     </style>
 </head>
 <body>
@@ -92,10 +102,11 @@
 
     <div id="results" class="results hidden">
         <h2>Results</h2>
-        <div id="hashtagTrafficShares"></div>
-        <div id="platformTrafficShares"></div>
-        <div id="averageSentimentScore"></div>
-        <div id="sentimentEvolution"></div>
+        <div class="visualization-container">
+            <div id="hashtagTrafficShares"></div>
+            <div id="platformTrafficShares"></div>
+            <div id="averageSentimentScore"></div>
+            <div id="sentimentEvolution"></div>
         <h3>Top Posts</h3>
         <ul id="topPosts"></ul>
     </div>
@@ -123,7 +134,9 @@
                 type: 'pie'
             }];
             var hashtagLayout = {
-                title: 'Hashtag Traffic Shares'
+                title: 'Hashtag Traffic Shares',
+                height: 300,
+                width: 300
             };
             Plotly.newPlot('hashtagTrafficShares', hashtagData, hashtagLayout);
 
@@ -134,7 +147,9 @@
                 type: 'pie'
             }];
             var platformLayout = {
-                title: 'Platform Traffic Shares'
+                title: 'Platform Traffic Shares',
+                height: 300,
+                width: 300
             };
             Plotly.newPlot('platformTrafficShares', platformData, platformLayout);
 
@@ -173,7 +188,9 @@
                 },
                 xaxis: {
                     title: 'Days'
-                }
+                },
+                height: 300,
+                width: 300
             };
             Plotly.newPlot('sentimentEvolution', sentimentEvolutionData, sentimentEvolutionLayout);
 
