@@ -4,10 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configuration Steps</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+        .loading, .results {
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
 </head>
 <body>
     <h1>Configuration Steps</h1>
-    <form action="/submit" method="post">
+    <form id="configForm">
         <h2>Instagram</h2>
         <label for="instagram_session_id">Session ID:</label>
         <input type="text" id="instagram_session_id" name="instagram_session_id" required><br>
@@ -34,5 +43,28 @@
 
         <button type="submit">Submit</button>
     </form>
+
+    <div id="loading" class="loading hidden">
+        <h2>Scraping Started</h2>
+    </div>
+
+    <div id="results" class="results hidden">
+        <h2>Results</h2>
+        <div id="plot1"><img src="docs/assets/auguste_piot.jpg" alt="Dummy Plot 1"></div>
+        <div id="plot2"><img src="docs/assets/cesar_dufournet.jpg" alt="Dummy Plot 2"></div>
+    </div>
+
+    <script>
+        document.getElementById('configForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            document.getElementById('configForm').classList.add('hidden');
+            document.getElementById('loading').classList.remove('hidden');
+
+            setTimeout(function() {
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('results').classList.remove('hidden');
+            }, 5000);
+        });
+    </script>
 </body>
 </html>
