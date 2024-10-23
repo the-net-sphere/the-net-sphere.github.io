@@ -126,8 +126,15 @@
             var sentimentDiv = document.createElement('div');
             sentimentDiv.className = 'circle';
             sentimentDiv.style.backgroundColor = sentimentColor;
-            sentimentDiv.innerHTML = `<div>${sentimentScore.toFixed(2)}</div><div>${sentimentLabel}</div>`;
+            sentimentDiv.style.color = 'white'; // Ensure text is visible
+            sentimentDiv.innerHTML = `<div>${sentimentScore.toFixed(2)}</div><div style="color: black;">${sentimentLabel}</div>`;
             document.getElementById('averageSentimentScore').appendChild(sentimentDiv);
+            
+            // Add title
+            var sentimentTitle = document.createElement('h3');
+            sentimentTitle.innerText = 'Average Sentiment Score';
+            document.getElementById('averageSentimentScore').prepend(sentimentTitle);
+
 
             // Sentiment Evolution Graph
             var sentimentEvolutionData = [{
