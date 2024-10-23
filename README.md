@@ -19,4 +19,4 @@ Please provide the following environment files
     - password
     - email
       
-The periodicity is set to 1 hour to run scrapers.
+The periodicity is set to 1 hour to run social media scrapers.
