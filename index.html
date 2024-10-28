@@ -6,6 +6,14 @@
     <title>Configuration Steps</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
+        .arrow {
+            cursor: pointer;
+            font-size: 24px;
+            margin: 10px;
+            color: blue;
+            user-select: none;
+        }
+
         .hidden {
             display: none;
         }
@@ -155,9 +163,10 @@
         <div class="top-posts-container">
             <h3>Top Posts</h3>
             <div id="topPosts" class="top-posts"></div>
-            <span id="viewMore" class="view-more" onclick="viewMorePosts()">View More</span>
-            <span id="goBack" class="go-back hidden" onclick="goBack()">Go Back</span>
+            <span id="prevArrow" class="arrow" onclick="prevPage()">◀</span>
+            <span id="nextArrow" class="arrow" onclick="nextPage()">▶</span>
         </div>
+        
         <div>
             <p>Last Scrape: <span id="lastScrape"></span></p>
             <p>Next Planned Scrape: <span id="nextScrape"></span></p>
@@ -251,7 +260,7 @@
 
             // Sentiment Evolution Graph
             var sentimentEvolutionData = [{
-                x: ['Scrape 1', 'Scrape 2', 'Scrape 3', 'Scrape 4', 'Scrape 5'],
+                x: ['11.10.2024', '14.10.2024', '17.10.2024', '24.10.2024', '28.10.2024'],
                 y: [-0.8, -0.3, 0.2, 0.6, -0.1],
                 type: 'scatter',
                 mode: 'lines+markers',
@@ -302,28 +311,29 @@
                     var tile = document.createElement('div');
                     tile.className = 'tile';
                     tile.innerHTML = `<h4>${post.platform}</h4>
-                                      <p><strong>Username:</strong> ${post.username}</p>
-                                      <p><strong>Content:</strong> ${post.content}</p>
-                                      <p><strong>Reactions:</strong> ${post.reactions}</p>
-                                      <p><strong>Sentiment:</strong> ${post.sentiment}</p>`;
+                                    <p><strong>Username:</strong> ${post.username}</p>
+                                    <p><strong>Content:</strong> ${post.content}</p>
+                                    <p><strong>Reactions:</strong> ${post.reactions}</p>
+                                    <p><strong>Sentiment:</strong> ${post.sentiment}</p>`;
                     topPostsContainer.appendChild(tile);
                 });
 
-                document.getElementById('viewMore').classList.toggle('hidden', end >= topPosts.length);
-                document.getElementById('goBack').classList.toggle('hidden', page === 1);
+                document.getElementById('prevArrow').classList.toggle('hidden', page === 1);
+                document.getElementById('nextArrow').classList.toggle('hidden', end >= topPosts.length);
             }
 
-            function viewMorePosts() {
+            function nextPage() {
                 currentPage++;
                 displayPosts(currentPage);
             }
 
-            function goBack() {
+            function prevPage() {
                 currentPage--;
                 displayPosts(currentPage);
             }
 
             displayPosts(currentPage);
+
         }
 
         document.getElementById('refreshButton').addEventListener('click', function() {
