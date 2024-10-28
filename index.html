@@ -113,9 +113,8 @@
             <div id="topPosts" class="top-posts"></div>
         </div>
         <div>
-            <p>Last Scrape: <span id="lastScrape">2024-10-27 12:00:00</span></p>
-            <p>Next Planned Scrape: <span id="nextScrape">2024-10-28 12:00:00</span></p>
-            <button id="refreshButton" onclick="refreshData()">Refresh</button>
+            <p>Last Scrape: <span id="lastScrape"></span></p>
+            <p>Next Planned Scrape: <span id="nextScrape"></span></p>
             <label for="viewSelector">View posts from:</label>
             <select id="viewSelector">
                 <option value="24h">Last 24h</option>
@@ -124,6 +123,7 @@
                 <option value="total">Total</option>
                 <option value="custom">Custom Period</option>
             </select>
+            <button id="refreshButton" onclick="refreshData()">Refresh</button>
         </div>
     </div>
 
@@ -138,9 +138,19 @@
                 document.getElementById('loading').classList.add('hidden');
                 document.getElementById('results').classList.remove('hidden');
                 document.getElementById('pageTitle').innerText = 'Dashboard';
+                setInitialScrapeTimes();
                 generateVisualizations();
             }, 5000);
         });
+
+        function setInitialScrapeTimes() {
+            var now = new Date();
+            var lastScrape = document.getElementById('lastScrape');
+            var nextScrape = document.getElementById('nextScrape');
+            lastScrape.innerText = now.toISOString();
+            var refreshInterval = parseInt(document.getElementById('refresh_interval').value);
+            nextScrape.innerText = new Date(now.getTime() + refreshInterval * 3600000).toISOString(); // Next scrape based on selected interval
+        }
 
         function generateVisualizations() {
             // Hashtag Traffic Shares Pie Chart
