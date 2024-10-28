@@ -77,6 +77,7 @@
             margin: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.2s;
+            width: 22%;
         }
         .tile:hover {
             transform: scale(1.05);
@@ -108,6 +109,11 @@
         #refreshButton {
             display: block;
             margin: 10px auto; /* Centers the button and adds some space above */
+        }
+        .view-more, .go-back {
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -149,6 +155,8 @@
         <div class="top-posts-container">
             <h3>Top Posts</h3>
             <div id="topPosts" class="top-posts"></div>
+            <span id="viewMore" class="view-more" onclick="viewMorePosts()">View More</span>
+            <span id="goBack" class="go-back hidden" onclick="goBack()">Go Back</span>
         </div>
         <div>
             <p>Last Scrape: <span id="lastScrape"></span></p>
@@ -226,6 +234,7 @@
             Plotly.newPlot('platformTrafficShares', platformData, platformLayout);
 
             // Average Sentiment Score
+            var sentimentScore = 0.3
             var sentimentScore = 0.3; // Example score
             var sentimentColor = sentimentScore > 0 ? 'green' : (sentimentScore < 0 ? 'red' : 'gray');
             var sentimentLabel = sentimentScore > 0.5 ? 'Great' : (sentimentScore > 0 ? 'Good' : (sentimentScore > -0.5 ? 'Bad' : 'Terrible'));
@@ -243,7 +252,7 @@
 
             // Sentiment Evolution Graph
             var sentimentEvolutionData = [{
-                x: ['Scrape 1 (10.10)', 'Scrape 2 (11.10)', 'Scrape 3 (12.10)', 'Scrape 4 (22.10)', 'Scrape 5 (28.10)'],
+                x: ['Scrape 1', 'Scrape 2', 'Scrape 3', 'Scrape 4', 'Scrape 5'],
                 y: [-0.8, -0.3, 0.2, 0.6, -0.1],
                 type: 'scatter',
                 mode: 'lines+markers',
@@ -269,19 +278,53 @@
                 { platform: 'X', username: '@melonmusk', content: 'Excellent support!', reactions: 200, sentiment: 'Great' },
                 { platform: 'Instagram', username: '@zuck', content: 'Great product!', reactions: 150, sentiment: 'Good' },
                 { platform: 'Meta', username: '@therock', content: 'Average experience.', reactions: 75, sentiment: 'Bad' },
-                { platform: 'LinkedIn', username: '@babyboss', content: 'Dissatisfied with the service.', reactions: 50, sentiment: 'Terrible' }
+                { platform: 'LinkedIn', username: '@babyboss', content: 'Dissatisfied with the service.', reactions: 50, sentiment: 'Terrible' },
+                { platform: 'X', username: '@elonmusk', content: 'Amazing!', reactions: 180, sentiment: 'Great' },
+                { platform: 'Instagram', username: '@zuckerberg', content: 'Loved it!', reactions: 140, sentiment: 'Good' },
+                { platform: 'Meta', username: '@therock', content: 'Not bad.', reactions: 70, sentiment: 'Bad' },
+                { platform: 'LinkedIn', username: '@bossbaby', content: 'Could be better.', reactions: 60, sentiment: 'Terrible' },
+                { platform: 'X', username: '@elon', content: 'Fantastic!', reactions: 190, sentiment: 'Great' },
+                { platform: 'Instagram', username: '@mark', content: 'Very good!', reactions: 160, sentiment: 'Good' },
+                { platform: 'Meta', username: '@rock', content: 'Okay.', reactions: 80, sentiment: 'Bad' },
+                { platform: 'LinkedIn', username: '@baby', content: 'Not satisfied.', reactions: 55, sentiment: 'Terrible' }
             ];
+
             var topPostsContainer = document.getElementById('topPosts');
-            topPosts.forEach(function(post) {
-                var tile = document.createElement('div');
-                tile.className = 'tile';
-                tile.innerHTML = `<h4>${post.platform}</h4>
-                                  <p><strong>Username:</strong> ${post.username}</p>
-                                  <p><strong>Content:</strong> ${post.content}</p>
-                                  <p><strong>Reactions:</strong> ${post.reactions}</p>
-                                  <p><strong>Sentiment:</strong> ${post.sentiment}</p>`;
-                topPostsContainer.appendChild(tile);
-            });
+            var currentPage = 1;
+            var postsPerPage = 4;
+
+            function displayPosts(page) {
+                topPostsContainer.innerHTML = '';
+                var start = (page - 1) * postsPerPage;
+                var end = start + postsPerPage;
+                var paginatedPosts = topPosts.slice(start, end);
+
+                paginatedPosts.forEach(function(post) {
+                    var tile = document.createElement('div');
+                    tile.className = 'tile';
+                    tile.innerHTML = `<h4>${post.platform}</h4>
+                                      <p><strong>Username:</strong> ${post.username}</p>
+                                      <p><strong>Content:</strong> ${post.content}</p>
+                                      <p><strong>Reactions:</strong> ${post.reactions}</p>
+                                      <p><strong>Sentiment:</strong> ${post.sentiment}</p>`;
+                    topPostsContainer.appendChild(tile);
+                });
+
+                document.getElementById('viewMore').classList.toggle('hidden', end >= topPosts.length);
+                document.getElementById('goBack').classList.toggle('hidden', page === 1);
+            }
+
+            function viewMorePosts() {
+                currentPage++;
+                displayPosts(currentPage);
+            }
+
+            function goBack() {
+                currentPage--;
+                displayPosts(currentPage);
+            }
+
+            displayPosts(currentPage);
         }
 
         document.getElementById('refreshButton').addEventListener('click', function() {
