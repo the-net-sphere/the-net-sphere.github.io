@@ -280,20 +280,20 @@
         var currentPage = 1;
         var postsPerPage = 4;
         var topPosts = [
-            { platform: 'X', username: 'elonmusk', content: 'Excellent support!', reactions: 200, sentiment: 'Great', sentimentScore: 0.9 },
-            { platform: 'Instagram', username: 'zuck', content: 'Great product!', reactions: 150, sentiment: 'Good', sentimentScore: 0.7 },
-            { platform: 'Meta', username: 'DwayneJohnson', content: 'Average experience.', reactions: 75, sentiment: 'Bad', sentimentScore: -0.2 },
-            { platform: 'LinkedIn', username: 'baby-boss', content: 'Dissatisfied with the service.', reactions: 50, sentiment: 'Terrible', sentimentScore: -0.8 },
-            { platform: 'X', username: 'elonmusk', content: 'Amazing!', reactions: 180, sentiment: 'Great', sentimentScore: 0.85 },
-            { platform: 'Instagram', username: 'zuck', content: 'Loved it!', reactions: 140, sentiment: 'Good', sentimentScore: 0.75 },
-            { platform: 'Meta', username: 'DwayneJohnson', content: 'Not bad.', reactions: 70, sentiment: 'Bad', sentimentScore: -0.1 },
-            { platform: 'LinkedIn', username: 'baby-boss', content: 'Could be better.', reactions: 60, sentiment: 'Terrible', sentimentScore: -0.6 },
-            { platform: 'X', username: 'elon', content: 'Fantastic!', reactions: 190, sentiment: 'Great', sentimentScore: 0.88 },
-            { platform: 'Instagram', username: 'mark', content: 'Very good!', reactions: 160, sentiment: 'Good', sentimentScore: 0.8 },
-            { platform: 'Meta', username: 'rock', content: 'Okay.', reactions: 80, sentiment: 'Bad', sentimentScore: -0.3 },
-            { platform: 'LinkedIn', username: 'baby', content: 'Not satisfied.', reactions: 55, sentiment: 'Terrible', sentimentScore: -0.7 }
+            { platform: 'X', username: 'elonmusk', content: 'Excellent support!', reactions: 200, sentiment: 'Great' },
+            { platform: 'Instagram', username: 'zuck', content: 'Great product!', reactions: 150, sentiment: 'Good' },
+            { platform: 'Meta', username: 'DwayneJohnson', content: 'Average experience.', reactions: 75, sentiment: 'Bad' },
+            { platform: 'LinkedIn', username: 'baby-boss', content: 'Dissatisfied with the service.', reactions: 50, sentiment: 'Terrible' },
+            { platform: 'X', username: 'elonmusk', content: 'Amazing!', reactions: 180, sentiment: 'Great' },
+            { platform: 'Instagram', username: 'zuck', content: 'Loved it!', reactions: 140, sentiment: 'Good' },
+            { platform: 'Meta', username: 'DwayneJohnson', content: 'Not bad.', reactions: 70, sentiment: 'Bad' },
+            { platform: 'LinkedIn', username: 'baby-boss', content: 'Could be better.', reactions: 60, sentiment: 'Terrible' },
+            { platform: 'X', username: 'elonmusk', content: 'Fantastic!', reactions: 190, sentiment: 'Great' },
+            { platform: 'Instagram', username: 'zuck', content: 'Very good!', reactions: 160, sentiment: 'Good' },
+            { platform: 'Meta', username: 'DwayneJohnson', content: 'Okay.', reactions: 80, sentiment: 'Bad' },
+            { platform: 'LinkedIn', username: 'baby-boss', content: 'Not satisfied.', reactions: 55, sentiment: 'Terrible' }
         ];
-    
+
         function getReplyLink(platform, username) {
             switch(platform) {
                 case 'X':
@@ -309,12 +309,12 @@
             }
         }
     
-        function displayPosts(posts, page) {
+        function displayPosts(page) {
             var topPostsContainer = document.getElementById('topPosts');
             topPostsContainer.innerHTML = '';
             var start = (page - 1) * postsPerPage;
             var end = start + postsPerPage;
-            var paginatedPosts = posts.slice(start, end);
+            var paginatedPosts = topPosts.slice(start, end);
             paginatedPosts.forEach(function(post) {
                 var tile = document.createElement('div');
                 tile.className = 'tile';
@@ -328,46 +328,51 @@
                 topPostsContainer.appendChild(tile);
             });
             document.getElementById('prevArrow').classList.toggle('hidden', page === 1);
-            document.getElementById('nextArrow').classList.toggle('hidden', end >= posts.length);
+            document.getElementById('nextArrow').classList.toggle('hidden', end >= topPosts.length);
         }
     
-        function nextPage(posts) {
-            if (currentPage * postsPerPage < posts.length) {
+        function nextPage() {
+            if (currentPage * postsPerPage < topPosts.length) {
                 currentPage++;
-                displayPosts(posts, currentPage);
+                displayPosts(currentPage);
             }
         }
     
-        function prevPage(posts) {
+        function prevPage() {
             if (currentPage > 1) {
                 currentPage--;
-                displayPosts(posts, currentPage);
+                displayPosts(currentPage);
             }
         }
     
-        function showTopLeads() {
-            // Sort posts by sentiment score in descending order
-            var sortedPosts = topPosts.sort((a, b) => b.sentimentScore - a.sentimentScore);
-            // Get the top 10% of posts
-            var topLeads = sortedPosts.slice(0, Math.ceil(sortedPosts.length * 0.1));
-            // Display the top leads
-            displayPosts(topLeads, currentPage);
-        }
-
-        // Initial display of all posts
-        displayPosts(topPosts, currentPage);
-
-        // Add event listeners for pagination
-        document.getElementById('nextArrow').addEventListener('click', function() {
-            nextPage(topPosts);
+        displayPosts(currentPage);
+    
+        document.getElementById('refreshButton').addEventListener('click', function() {
+            var lastClickTime = localStorage.getItem('lastClickTime');
+            var now = new Date().getTime();
+            if (lastClickTime && now - lastClickTime < 3600000) { // 1 hour in milliseconds
+                alert('You can only refresh once per hour.');
+                return;
+            }
+            localStorage.setItem('lastClickTime', now);
+            refreshData();
         });
-        document.getElementById('prevArrow').addEventListener('click', function() {
-            prevPage(topPosts);
+    
+        document.getElementById('configForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            document.getElementById('configForm').classList.add('hidden');
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('pageTitle').innerText = 'Scraping';
+            setTimeout(function() {
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('results').classList.remove('hidden');
+                document.getElementById('pageTitle').innerText = 'Dashboard';
+                setInitialScrapeTimes();
+                generateVisualizations();
+            }, 5000);
         });
 
-        // Show top leads on page load
-        showTopLeads();
-</script>
+    </script>
 
 </body>
 </html>
