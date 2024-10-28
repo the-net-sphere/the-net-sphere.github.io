@@ -76,30 +76,13 @@
 <body>
     <h1 id="pageTitle">Configuration Steps</h1>
     <form id="configForm">
-        <h2>Instagram</h2>
-        <label for="instagram_session_id">Session ID:</label>
-        <input type="text" id="instagram_session_id" name="instagram_session_id" required><br>
-        <label for="instagram_user_id">User ID:</label>
-        <input type="text" id="instagram_user_id" name="instagram_user_id" required><br>
-
-        <h2>LinkedIn</h2>
-        <label for="linkedin_cookies">Cookies.txt:</label>
-        <input type="file" id="linkedin_cookies" name="linkedin_cookies" required><br>
-
-        <h2>Meta</h2>
-        <label for="meta_email">Email:</label>
-        <input type="email" id="meta_email" name="meta_email" required><br>
-        <label for="meta_password">Password:</label>
-        <input type="password" id="meta_password" name="meta_password" required><br>
-
-        <h2>X</h2>
-        <label for="x_username">Username:</label>
-        <input type="text" id="x_username" name="x_username" required><br>
-        <label for="x_password">Password:</label>
-        <input type="password" id="x_password" name="x_password" required><br>
-        <label for="x_email">Email:</label>
-        <input type="email" id="x_email" name="x_email" required><br>
-
+        <h2>Configuration</h2>
+        <label for="hashtags">Comma Separated Hashtag List:</label>
+        <input type="text" id="hashtags" name="hashtags" required><br>
+        <label for="company_name">Company Name:</label>
+        <input type="text" id="company_name" name="company_name" required><br>
+        <label for="ai_prompt">Custom AI Prompt for Post Response Suggestions:</label>
+        <textarea id="ai_prompt" name="ai_prompt" required></textarea><br>
         <button type="submit">Submit</button>
     </form>
 
@@ -120,19 +103,18 @@
             <h3>Top Posts</h3>
             <div id="topPosts" class="top-posts"></div>
         </div>
-    </div>
-
-    <div>
-        <p>Last Scrape: <span id="lastScrape"></span></p>
-        <p>Next Planned Scrape: <span id="nextScrape"></span></p>
-        <button id="refreshButton" onclick="refreshData()">Refresh</button>
-        <select id="viewSelector">
-            <option value="24h">Last 24h</option>
-            <option value="6months">Last 6 months</option>
-            <option value="year">Last year</option>
-            <option value="total">Total</option>
-            <option value="custom">Custom Period</option>
-        </select>
+        <div>
+            <p>Last Scrape: <span id="lastScrape">2024-10-27 12:00:00</span></p>
+            <p>Next Planned Scrape: <span id="nextScrape">2024-10-28 12:00:00</span></p>
+            <button id="refreshButton" onclick="refreshData()">Refresh</button>
+            <select id="viewSelector">
+                <option value="24h">Last 24h</option>
+                <option value="6months">Last 6 months</option>
+                <option value="year">Last year</option>
+                <option value="total">Total</option>
+                <option value="custom">Custom Period</option>
+            </select>
+        </div>
     </div>
 
     <script>
@@ -220,16 +202,33 @@
             ];
             var topPostsContainer = document.getElementById('topPosts');
             topPosts.forEach(function(post) {
-                var tile = document.createElement('div');
-                tile.className = 'tile';
-                tile.innerHTML = `<h4>${post.platform}</h4>
-                                  <p><strong>Username:</strong> ${post.username}</p>
-                                  <p><strong>Content:</strong> ${post.content}</p>
-                                  <p><strong>Reactions:</strong> ${post.reactions}</p>
-                                  <p><strong>Sentiment Score:</strong> ${post.sentiment}</p>`;
-                topPostsContainer.appendChild(tile);
+                var postDiv = document.createElement('div');
+                postDiv.className = 'tile';
+                postDiv.innerHTML = `<h4>Post ${post.id}</h4><p>${post.content}</p><p>Sentiment: ${post.sentiment}</p>`;
+                topPostsContainer.appendChild(postDiv);
             });
         }
+
+        function refreshData() {
+            var now = new Date();
+            var lastScrape = document.getElementById('lastScrape');
+            var nextScrape = document.getElementById('nextScrape');
+            lastScrape.innerText = now.toISOString();
+            nextScrape.innerText = new Date(now.getTime() + 3600000).toISOString(); // Next scrape in 1 hour
+        }
+
+        document.getElementById('refreshButton').addEventListener('click', function() {
+            var lastClickTime = localStorage.getItem('lastClickTime');
+            var now = new Date().getTime();
+
+            if (lastClickTime && now - lastClickTime < 3600000) { // 1 hour in milliseconds
+                alert('You can only refresh once per hour.');
+                return;
+            }
+
+            localStorage.setItem('lastClickTime', now);
+            refreshData();
+        });
     </script>
 </body>
 </html>
