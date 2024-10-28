@@ -122,6 +122,19 @@
         </div>
     </div>
 
+    <div>
+        <p>Last Scrape: <span id="lastScrape"></span></p>
+        <p>Next Planned Scrape: <span id="nextScrape"></span></p>
+        <button id="refreshButton" onclick="refreshData()">Refresh</button>
+        <select id="viewSelector">
+            <option value="24h">Last 24h</option>
+            <option value="6months">Last 6 months</option>
+            <option value="year">Last year</option>
+            <option value="total">Total</option>
+            <option value="custom">Custom Period</option>
+        </select>
+    </div>
+
     <script>
         document.getElementById('configForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -180,10 +193,9 @@
             sentimentTitle.innerText = 'Average Sentiment Score';
             document.getElementById('averageSentimentScore').prepend(sentimentTitle);
 
-
             // Sentiment Evolution Graph
             var sentimentEvolutionData = [{
-                x: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5'],
+                x: ['Scrape 1', 'Scrape 2', 'Scrape 3', 'Scrape 4', 'Scrape 5'],
                 y: [-0.8, -0.3, 0.2, 0.6, -0.1],
                 type: 'scatter',
                 mode: 'lines+markers'
@@ -196,21 +208,15 @@
                     zeroline: true,
                     zerolinecolor: 'gray',
                     zerolinewidth: 2
-                },
-                xaxis: {
-                    title: 'Days'
-                },
-                height: 300,
-                width: 300
+                }
             };
             Plotly.newPlot('sentimentEvolution', sentimentEvolutionData, sentimentEvolutionLayout);
 
-            // Top Posts List
+            // Top Posts
             var topPosts = [
-                { platform: 'X', username: '@melonmusk', content: 'Excellent support!', reactions: 200, sentiment: 0.9 },
-                { platform: 'Instagram', username: '@zuck', content: 'Great product!', reactions: 150, sentiment: 0.8 },
-                { platform: 'Meta', username: '@therock', content: 'Average experience.', reactions: 75, sentiment: -0.2 },
-                { platform: 'LinkedIn', username: '@babyboss', content: 'Not satisfied with the service.', reactions: 50, sentiment: -0.6 }
+                { id: 1, content: 'Post 1', sentiment: 0.8 },
+                { id: 2, content: 'Post 2', sentiment: -0.5 },
+                { id: 3, content: 'Post 3', sentiment: 0.3 }
             ];
             var topPostsContainer = document.getElementById('topPosts');
             topPosts.forEach(function(post) {
