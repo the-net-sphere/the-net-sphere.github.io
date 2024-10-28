@@ -234,7 +234,6 @@
             Plotly.newPlot('platformTrafficShares', platformData, platformLayout);
 
             // Average Sentiment Score
-            var sentimentScore = 0.3
             var sentimentScore = 0.3; // Example score
             var sentimentColor = sentimentScore > 0 ? 'green' : (sentimentScore < 0 ? 'red' : 'gray');
             var sentimentLabel = sentimentScore > 0.5 ? 'Great' : (sentimentScore > 0 ? 'Good' : (sentimentScore > -0.5 ? 'Bad' : 'Terrible'));
