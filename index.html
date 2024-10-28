@@ -257,18 +257,23 @@
             };
             Plotly.newPlot('sentimentEvolution', sentimentEvolutionData, sentimentEvolutionLayout);
 
-            // Top Posts
+            // Top Posts List
             var topPosts = [
-                { id: 1, content: 'I love this product, so tasty!', sentiment: 'Great' },
-                { id: 2, content: 'This AI tool made me lose my job >:(', sentiment: 'Terrible' },
-                { id: 3, content: 'Spanner works well', sentiment: 'Good' }
+                { platform: 'X', username: '@melonmusk', content: 'Excellent support!', reactions: 200, sentiment: 0.9 },
+                { platform: 'Instagram', username: '@zuck', content: 'Great product!', reactions: 150, sentiment: 0.8 },
+                { platform: 'Meta', username: '@therock', content: 'Average experience.', reactions: 75, sentiment: -0.2 },
+                { platform: 'LinkedIn', username: '@babyboss', content: 'Not satisfied with the service.', reactions: 50, sentiment: -0.6 }
             ];
             var topPostsContainer = document.getElementById('topPosts');
             topPosts.forEach(function(post) {
-                var postDiv = document.createElement('div');
-                postDiv.className = 'tile';
-                postDiv.innerHTML = `<h4>Post ${post.id}</h4><p>${post.content}</p><p>Sentiment: ${post.sentiment}</p>`;
-                topPostsContainer.appendChild(postDiv);
+                var tile = document.createElement('div');
+                tile.className = 'tile';
+                tile.innerHTML = `<h4>${post.platform}</h4>
+                                  <p><strong>Username:</strong> ${post.username}</p>
+                                  <p><strong>Content:</strong> ${post.content}</p>
+                                  <p><strong>Reactions:</strong> ${post.reactions}</p>
+                                  <p><strong>Sentiment Score:</strong> ${post.sentiment}</p>`;
+                topPostsContainer.appendChild(tile);
             });
         }
 
