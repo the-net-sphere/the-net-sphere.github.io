@@ -13,8 +13,6 @@
             color: blue;
             user-select: none;
         }
-
-
         .hidden {
             display: none;
         }
@@ -147,12 +145,10 @@
         </select><br>
         <button type="submit">Submit</button>
     </form>
-
     <div id="loading" class="loading hidden">
         <div class="spinner"></div>
         <h2>Scraping Started</h2>
     </div>
-
     <div id="results" class="results hidden">
         <h2>Results</h2>
         <div class="visualization-container">
@@ -167,8 +163,6 @@
             <div id="topPosts" class="top-posts"></div>
             <span id="nextArrow" class="arrow" onclick="nextPage()">▶</span>
         </div>
-        
-        
         <div>
             <p>Last Scrape: <span id="lastScrape"></span></p>
             <p>Next Planned Scrape: <span id="nextScrape"></span></p>
@@ -183,7 +177,6 @@
             <button id="refreshButton" onclick="refreshData()">Refresh</button>
         </div>
     </div>
-
     <script>
         function formatDateTime(dateTimeStr) {
             const options = {
@@ -193,7 +186,7 @@
             };
             return new Date(dateTimeStr).toLocaleString('en-US', options);
         }
-
+    
         function setInitialScrapeTimes() {
             var now = new Date();
             var lastScrape = document.getElementById('lastScrape');
@@ -202,7 +195,7 @@
             var refreshInterval = parseInt(document.getElementById('refresh_interval').value);
             nextScrape.innerText = formatDateTime(new Date(now.getTime() + refreshInterval * 3600000).toISOString());
         }
-
+    
         function refreshData() {
             var now = new Date();
             var lastScrape = document.getElementById('lastScrape');
@@ -211,7 +204,7 @@
             var refreshInterval = parseInt(document.getElementById('refresh_interval').value);
             nextScrape.innerText = formatDateTime(new Date(now.getTime() + refreshInterval * 3600000).toISOString());
         }
-
+    
         function generateVisualizations() {
             // Hashtag Traffic Shares Pie Chart
             var hashtags = document.getElementById('hashtags').value.split(',').map(tag => `#${tag.trim()}`);
@@ -228,7 +221,7 @@
                 width: 300
             };
             Plotly.newPlot('hashtagTrafficShares', hashtagData, hashtagLayout);
-
+    
             // Platform Traffic Shares Pie Chart
             var platformData = [{
                 values: [40, 25, 20, 15],
@@ -243,7 +236,7 @@
                 width: 300
             };
             Plotly.newPlot('platformTrafficShares', platformData, platformLayout);
-
+    
             // Average Sentiment Score
             var sentimentScore = 0.3; // Example score
             var sentimentColor = sentimentScore > 0 ? 'green' : (sentimentScore < 0 ? 'red' : 'gray');
@@ -259,7 +252,7 @@
             var sentimentTitle = document.createElement('h3');
             sentimentTitle.innerText = 'Average Sentiment Score';
             document.getElementById('averageSentimentScore').prepend(sentimentTitle);
-
+    
             // Sentiment Evolution Graph
             var sentimentEvolutionData = [{
                 x: ['11.10.2024', '14.10.2024', '17.10.2024', '24.10.2024', '28.10.2024'],
@@ -283,7 +276,7 @@
             };
             Plotly.newPlot('sentimentEvolution', sentimentEvolutionData, sentimentEvolutionLayout);
         }
-
+    
         var currentPage = 1;
         var postsPerPage = 4;
         var topPosts = [
@@ -300,14 +293,13 @@
             { platform: 'Meta', username: '@rock', content: 'Okay.', reactions: 80, sentiment: 'Bad' },
             { platform: 'LinkedIn', username: '@baby', content: 'Not satisfied.', reactions: 55, sentiment: 'Terrible' }
         ];
-
+    
         function displayPosts(page) {
             var topPostsContainer = document.getElementById('topPosts');
             topPostsContainer.innerHTML = '';
             var start = (page - 1) * postsPerPage;
             var end = start + postsPerPage;
             var paginatedPosts = topPosts.slice(start, end);
-
             paginatedPosts.forEach(function(post) {
                 var tile = document.createElement('div');
                 tile.className = 'tile';
@@ -318,42 +310,42 @@
                                 <p><strong>Sentiment:</strong> ${post.sentiment}</p>`;
                 topPostsContainer.appendChild(tile);
             });
-
             document.getElementById('prevArrow').classList.toggle('hidden', page === 1);
             document.getElementById('nextArrow').classList.toggle('hidden', end >= topPosts.length);
         }
-
+    
         function nextPage() {
-            currentPage++;
-            displayPosts(currentPage);
+            if (currentPage * postsPerPage < topPosts.length) {
+                currentPage++;
+                displayPosts(currentPage);
+            }
         }
-
+    
         function prevPage() {
-            currentPage--;
-            displayPosts(currentPage);
+            if (currentPage > 1) {
+                currentPage--;
+                displayPosts(currentPage);
+            }
         }
-
+    
         displayPosts(currentPage);
-
+    
         document.getElementById('refreshButton').addEventListener('click', function() {
             var lastClickTime = localStorage.getItem('lastClickTime');
             var now = new Date().getTime();
-
             if (lastClickTime && now - lastClickTime < 3600000) { // 1 hour in milliseconds
                 alert('You can only refresh once per hour.');
                 return;
             }
-
             localStorage.setItem('lastClickTime', now);
             refreshData();
         });
-
+    
         document.getElementById('configForm').addEventListener('submit', function(event) {
             event.preventDefault();
             document.getElementById('configForm').classList.add('hidden');
             document.getElementById('loading').classList.remove('hidden');
             document.getElementById('pageTitle').innerText = 'Scraping';
-
             setTimeout(function() {
                 document.getElementById('loading').classList.add('hidden');
                 document.getElementById('results').classList.remove('hidden');
@@ -362,6 +354,8 @@
                 generateVisualizations();
             }, 5000);
         });
+        
     </script>
+
 </body>
 </html>
