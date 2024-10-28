@@ -280,34 +280,19 @@
         var currentPage = 1;
         var postsPerPage = 4;
         var topPosts = [
-            { platform: 'X', username: 'elonmusk', content: 'Excellent support!', reactions: 200, sentiment: 'Great' },
-            { platform: 'Instagram', username: 'zuck', content: 'Great product!', reactions: 150, sentiment: 'Good' },
-            { platform: 'Meta', username: 'DwayneJohnson', content: 'Average experience.', reactions: 75, sentiment: 'Bad' },
-            { platform: 'LinkedIn', username: 'baby-boss', content: 'Dissatisfied with the service.', reactions: 50, sentiment: 'Terrible' },
-            { platform: 'X', username: 'elonmusk', content: 'Amazing!', reactions: 180, sentiment: 'Great' },
-            { platform: 'Instagram', username: 'zuck', content: 'Loved it!', reactions: 140, sentiment: 'Good' },
-            { platform: 'Meta', username: 'DwayneJohnson', content: 'Not bad.', reactions: 70, sentiment: 'Bad' },
-            { platform: 'LinkedIn', username: 'baby-boss', content: 'Could be better.', reactions: 60, sentiment: 'Terrible' },
-            { platform: 'X', username: 'elonmusk', content: 'Fantastic!', reactions: 190, sentiment: 'Great' },
-            { platform: 'Instagram', username: 'zuck', content: 'Very good!', reactions: 160, sentiment: 'Good' },
-            { platform: 'Meta', username: 'DwayneJohnson', content: 'Okay.', reactions: 80, sentiment: 'Bad' },
-            { platform: 'LinkedIn', username: 'baby-boss', content: 'Not satisfied.', reactions: 55, sentiment: 'Terrible' }
+            { platform: 'X', username: '@melonmusk', content: 'Excellent support!', reactions: 200, sentiment: 'Great' },
+            { platform: 'Instagram', username: '@zuck', content: 'Great product!', reactions: 150, sentiment: 'Good' },
+            { platform: 'Meta', username: '@therock', content: 'Average experience.', reactions: 75, sentiment: 'Bad' },
+            { platform: 'LinkedIn', username: '@babyboss', content: 'Dissatisfied with the service.', reactions: 50, sentiment: 'Terrible' },
+            { platform: 'X', username: '@elonmusk', content: 'Amazing!', reactions: 180, sentiment: 'Great' },
+            { platform: 'Instagram', username: '@zuckerberg', content: 'Loved it!', reactions: 140, sentiment: 'Good' },
+            { platform: 'Meta', username: '@therock', content: 'Not bad.', reactions: 70, sentiment: 'Bad' },
+            { platform: 'LinkedIn', username: '@bossbaby', content: 'Could be better.', reactions: 60, sentiment: 'Terrible' },
+            { platform: 'X', username: '@elon', content: 'Fantastic!', reactions: 190, sentiment: 'Great' },
+            { platform: 'Instagram', username: '@mark', content: 'Very good!', reactions: 160, sentiment: 'Good' },
+            { platform: 'Meta', username: '@rock', content: 'Okay.', reactions: 80, sentiment: 'Bad' },
+            { platform: 'LinkedIn', username: '@baby', content: 'Not satisfied.', reactions: 55, sentiment: 'Terrible' }
         ];
-
-        function getReplyLink(platform, username) {
-            switch(platform) {
-                case 'X':
-                    return `https://x.com/${username}`;
-                case 'Instagram':
-                    return `https://instagram.com/${username}`;
-                case 'Meta':
-                    return `https://facebook.com/${username}`;
-                case 'LinkedIn':
-                    return `https://linkedin.com/company/${username}`;
-                default:
-                    return '#';
-            }
-        }
     
         function displayPosts(page) {
             var topPostsContainer = document.getElementById('topPosts');
@@ -318,13 +303,11 @@
             paginatedPosts.forEach(function(post) {
                 var tile = document.createElement('div');
                 tile.className = 'tile';
-                var replyLink = getReplyLink(post.platform, post.username);
                 tile.innerHTML = `<h4>${post.platform}</h4>
                                 <p><strong>Username:</strong> ${post.username}</p>
                                 <p><strong>Content:</strong> ${post.content}</p>
                                 <p><strong>Reactions:</strong> ${post.reactions}</p>
-                                <p><strong>Sentiment:</strong> ${post.sentiment}</p>
-                                <p><a href="${replyLink}" target="_blank">Reply</a></p>`;
+                                <p><strong>Sentiment:</strong> ${post.sentiment}</p>`;
                 topPostsContainer.appendChild(tile);
             });
             document.getElementById('prevArrow').classList.toggle('hidden', page === 1);
@@ -371,7 +354,7 @@
                 generateVisualizations();
             }, 5000);
         });
-
+        
     </script>
 
 </body>
