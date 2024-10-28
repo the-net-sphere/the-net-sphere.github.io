@@ -181,6 +181,23 @@
             }, 5000);
         });
 
+        function setInitialScrapeTimes() {
+            var now = new Date();
+            var lastScrape = document.getElementById('lastScrape');
+            var nextScrape = document.getElementById('nextScrape');
+            lastScrape.innerText = formatDateTime(now.toISOString());
+            var refreshInterval = parseInt(document.getElementById('refresh_interval').value);
+            nextScrape.innerText = formatDateTime(new Date(now.getTime() + refreshInterval * 3600000).toISOString());
+        }
+
+        function formatDateTime(dateTimeStr) {
+            const options = {
+                year: 'numeric', month: 'long', day: 'numeric',
+                hour: '2-digit', minute: '2-digit', second: '2-digit',
+                hour12: false
+            };
+            return new Date(dateTimeStr).toLocaleString('en-US', options);
+        }
 
         function generateVisualizations() {
             // Hashtag Traffic Shares Pie Chart
