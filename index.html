@@ -83,6 +83,15 @@
         <input type="text" id="company_name" name="company_name" required><br>
         <label for="ai_prompt">Custom AI Prompt for Post Response Suggestions:</label>
         <textarea id="ai_prompt" name="ai_prompt" required></textarea><br>
+        <label for="refresh_interval">Refresh Interval:</label>
+        <select id="refresh_interval" name="refresh_interval" required>
+            <option value="1">Every hour</option>
+            <option value="2">Every 2 hours</option>
+            <option value="4">Every 4 hours</option>
+            <option value="8">Every 8 hours</option>
+            <option value="12">Every 12 hours</option>
+            <option value="24">Every 24 hours</option>
+        </select><br>
         <button type="submit">Submit</button>
     </form>
 
@@ -107,6 +116,7 @@
             <p>Last Scrape: <span id="lastScrape">2024-10-27 12:00:00</span></p>
             <p>Next Planned Scrape: <span id="nextScrape">2024-10-28 12:00:00</span></p>
             <button id="refreshButton" onclick="refreshData()">Refresh</button>
+            <label for="viewSelector">View posts from:</label>
             <select id="viewSelector">
                 <option value="24h">Last 24h</option>
                 <option value="6months">Last 6 months</option>
@@ -137,7 +147,9 @@
             var hashtagData = [{
                 values: [30, 45, 25],
                 labels: ['#crm', '#dynamics', '#microsoft'],
-                type: 'pie'
+                type: 'pie',
+                textinfo: 'label+percent',
+                insidetextorientation: 'radial'
             }];
             var hashtagLayout = {
                 title: 'Hashtag Traffic Shares',
@@ -150,7 +162,9 @@
             var platformData = [{
                 values: [40, 25, 20, 15],
                 labels: ['Instagram', 'LinkedIn', 'Meta', 'X'],
-                type: 'pie'
+                type: 'pie',
+                textinfo: 'label+percent',
+                insidetextorientation: 'radial'
             }];
             var platformLayout = {
                 title: 'Platform Traffic Shares',
@@ -167,7 +181,7 @@
             sentimentDiv.className = 'circle';
             sentimentDiv.style.backgroundColor = sentimentColor;
             sentimentDiv.style.color = 'white'; // Ensure text is visible
-            sentimentDiv.innerHTML = `<div>${sentimentScore.toFixed(2)}</div><div style="color: black;">${sentimentLabel}</div>`;
+            sentimentDiv.innerHTML = `<div>${sentimentLabel}</div>`;
             document.getElementById('averageSentimentScore').appendChild(sentimentDiv);
             
             // Add title
@@ -180,7 +194,9 @@
                 x: ['Scrape 1', 'Scrape 2', 'Scrape 3', 'Scrape 4', 'Scrape 5'],
                 y: [-0.8, -0.3, 0.2, 0.6, -0.1],
                 type: 'scatter',
-                mode: 'lines+markers'
+                mode: 'lines+markers',
+                text: ['Terrible', 'Bad', 'Good', 'Great', 'Bad'],
+                hoverinfo: 'text'
             }];
             var sentimentEvolutionLayout = {
                 title: 'Sentiment Evolution',
@@ -196,9 +212,9 @@
 
             // Top Posts
             var topPosts = [
-                { id: 1, content: 'Post 1', sentiment: 0.8 },
-                { id: 2, content: 'Post 2', sentiment: -0.5 },
-                { id: 3, content: 'Post 3', sentiment: 0.3 }
+                { id: 1, content: 'I love this product, so tasty!', sentiment: 'Great' },
+                { id: 2, content: 'This AI tool made me lose my job >:(', sentiment: 'Terrible' },
+                { id: 3, content: 'Spanner works well', sentiment: 'Good' }
             ];
             var topPostsContainer = document.getElementById('topPosts');
             topPosts.forEach(function(post) {
@@ -214,7 +230,8 @@
             var lastScrape = document.getElementById('lastScrape');
             var nextScrape = document.getElementById('nextScrape');
             lastScrape.innerText = now.toISOString();
-            nextScrape.innerText = new Date(now.getTime() + 3600000).toISOString(); // Next scrape in 1 hour
+            var refreshInterval = parseInt(document.getElementById('refresh_interval').value);
+            nextScrape.innerText = new Date(now.getTime() + refreshInterval * 3600000).toISOString(); // Next scrape based on selected interval
         }
 
         document.getElementById('refreshButton').addEventListener('click', function() {
