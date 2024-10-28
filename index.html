@@ -293,7 +293,7 @@
             { platform: 'Meta', username: 'rock', content: 'Okay.', reactions: 80, sentiment: 'Bad', sentimentScore: -0.3 },
             { platform: 'LinkedIn', username: 'baby', content: 'Not satisfied.', reactions: 55, sentiment: 'Terrible', sentimentScore: -0.7 }
         ];
-
+    
         function getReplyLink(platform, username) {
             switch(platform) {
                 case 'X':
@@ -308,7 +308,7 @@
                     return '#';
             }
         }
-
+    
         function displayPosts(posts, page) {
             var topPostsContainer = document.getElementById('topPosts');
             topPostsContainer.innerHTML = '';
@@ -330,21 +330,21 @@
             document.getElementById('prevArrow').classList.toggle('hidden', page === 1);
             document.getElementById('nextArrow').classList.toggle('hidden', end >= posts.length);
         }
-
+    
         function nextPage(posts) {
             if (currentPage * postsPerPage < posts.length) {
                 currentPage++;
                 displayPosts(posts, currentPage);
             }
         }
-
+    
         function prevPage(posts) {
             if (currentPage > 1) {
                 currentPage--;
                 displayPosts(posts, currentPage);
             }
         }
-
+    
         function showTopLeads() {
             // Sort posts by sentiment score in descending order
             var sortedPosts = topPosts.sort((a, b) => b.sentimentScore - a.sentimentScore);
@@ -352,17 +352,6 @@
             var topLeads = sortedPosts.slice(0, Math.ceil(sortedPosts.length * 0.1));
             // Display the top leads
             displayPosts(topLeads, currentPage);
-        }
-
-        function toggleView() {
-            var toggleButton = document.getElementById('toggleButton');
-            if (toggleButton.innerText === 'Show Top Leads') {
-                toggleButton.innerText = 'Show Top Posts';
-                showTopLeads();
-            } else {
-                toggleButton.innerText = 'Show Top Leads';
-                displayPosts(topPosts, currentPage);
-            }
         }
 
         // Initial display of all posts
@@ -376,34 +365,9 @@
             prevPage(topPosts);
         });
 
-        // Add event listener for toggle button
-        document.getElementById('toggleButton').addEventListener('click', toggleView);
-
-        document.getElementById('refreshButton').addEventListener('click', function() {
-            var lastClickTime = localStorage.getItem('lastClickTime');
-            var now = new Date().getTime();
-            if (lastClickTime && now - lastClickTime < 3600000) { // 1 hour in milliseconds
-                alert('You can only refresh once per hour.');
-                return;
-            }
-            localStorage.setItem('lastClickTime', now);
-            refreshData();
-        });
-
-        document.getElementById('configForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            document.getElementById('configForm').classList.add('hidden');
-            document.getElementById('loading').classList.remove('hidden');
-            document.getElementById('pageTitle').innerText = 'Scraping';
-            setTimeout(function() {
-                document.getElementById('loading').classList.add('hidden');
-                document.getElementById('results').classList.remove('hidden');
-                document.getElementById('pageTitle').innerText = 'Dashboard';
-                setInitialScrapeTimes();
-                generateVisualizations();
-            }, 5000);
-        });
-    </script>
+        // Show top leads on page load
+        showTopLeads();
+</script>
 
 </body>
 </html>
