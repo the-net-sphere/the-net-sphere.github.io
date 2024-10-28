@@ -166,20 +166,14 @@
     </div>
 
     <script>
-        document.getElementById('configForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            document.getElementById('configForm').classList.add('hidden');
-            document.getElementById('loading').classList.remove('hidden');
-            document.getElementById('pageTitle').innerText = 'Scraping';
-
-            setTimeout(function() {
-                document.getElementById('loading').classList.add('hidden');
-                document.getElementById('results').classList.remove('hidden');
-                document.getElementById('pageTitle').innerText = 'Dashboard';
-                setInitialScrapeTimes();
-                generateVisualizations();
-            }, 5000);
-        });
+        function formatDateTime(dateTimeStr) {
+            const options = {
+                year: 'numeric', month: 'long', day: 'numeric',
+                hour: '2-digit', minute: '2-digit', second: '2-digit',
+                hour12: false
+            };
+            return new Date(dateTimeStr).toLocaleString('en-US', options);
+        }
 
         function setInitialScrapeTimes() {
             var now = new Date();
@@ -190,13 +184,13 @@
             nextScrape.innerText = formatDateTime(new Date(now.getTime() + refreshInterval * 3600000).toISOString());
         }
 
-        function formatDateTime(dateTimeStr) {
-            const options = {
-                year: 'numeric', month: 'long', day: 'numeric',
-                hour: '2-digit', minute: '2-digit', second: '2-digit',
-                hour12: false
-            };
-            return new Date(dateTimeStr).toLocaleString('en-US', options);
+        function refreshData() {
+            var now = new Date();
+            var lastScrape = document.getElementById('lastScrape');
+            var nextScrape = document.getElementById('nextScrape');
+            lastScrape.innerText = formatDateTime(now.toISOString());
+            var refreshInterval = parseInt(document.getElementById('refresh_interval').value);
+            nextScrape.innerText = formatDateTime(new Date(now.getTime() + refreshInterval * 3600000).toISOString());
         }
 
         function generateVisualizations() {
@@ -249,7 +243,7 @@
 
             // Sentiment Evolution Graph
             var sentimentEvolutionData = [{
-                x: ['Scrape 1 (10.10)', 'Scrape 2 (12.10)', 'Scrape 3 (14.10)', 'Scrape 4 (23.10)', 'Scrape 5 (28.10)'],
+                x: ['Scrape 1 (10.10)', 'Scrape 2 (11.10)', 'Scrape 3 (12.10)', 'Scrape 4 (22.10)', 'Scrape 5 (28.10)'],
                 y: [-0.8, -0.3, 0.2, 0.6, -0.1],
                 type: 'scatter',
                 mode: 'lines+markers',
@@ -272,10 +266,10 @@
 
             // Top Posts List
             var topPosts = [
-                { platform: 'X', username: '@melonmusk', content: 'Excellent support!', reactions: 200, sentiment: Great },
-                { platform: 'Instagram', username: '@zuck', content: 'Great product!', reactions: 150, sentiment: Good },
-                { platform: 'Meta', username: '@therock', content: 'Average experience.', reactions: 75, sentiment: Bad },
-                { platform: 'LinkedIn', username: '@babyboss', content: 'Dissatisfied with the service.', reactions: 50, sentiment: Terrible}
+                { platform: 'X', username: '@melonmusk', content: 'Excellent support!', reactions: 200, sentiment: 'Great' },
+                { platform: 'Instagram', username: '@zuck', content: 'Great product!', reactions: 150, sentiment: 'Good' },
+                { platform: 'Meta', username: '@therock', content: 'Average experience.', reactions: 75, sentiment: 'Bad' },
+                { platform: 'LinkedIn', username: '@babyboss', content: 'Dissatisfied with the service.', reactions: 50, sentiment: 'Terrible' }
             ];
             var topPostsContainer = document.getElementById('topPosts');
             topPosts.forEach(function(post) {
@@ -285,36 +279,9 @@
                                   <p><strong>Username:</strong> ${post.username}</p>
                                   <p><strong>Content:</strong> ${post.content}</p>
                                   <p><strong>Reactions:</strong> ${post.reactions}</p>
-                                  <p><strong>Sentiment Score:</strong> ${post.sentiment}</p>`;
+                                  <p><strong>Sentiment:</strong> ${post.sentiment}</p>`;
                 topPostsContainer.appendChild(tile);
             });
-        }
-
-        function formatDateTime(dateTimeStr) {
-            const options = {
-                year: 'numeric', month: 'long', day: 'numeric',
-                hour: '2-digit', minute: '2-digit', second: '2-digit',
-                hour12: false
-            };
-            return new Date(dateTimeStr).toLocaleString('en-US', options);
-        }
-
-        function setInitialScrapeTimes() {
-            var now = new Date();
-            var lastScrape = document.getElementById('lastScrape');
-            var nextScrape = document.getElementById('nextScrape');
-            lastScrape.innerText = formatDateTime(now.toISOString());
-            var refreshInterval = parseInt(document.getElementById('refresh_interval').value);
-            nextScrape.innerText = formatDateTime(new Date(now.getTime() + refreshInterval * 3600000).toISOString());
-        }
-
-        function refreshData() {
-            var now = new Date();
-            var lastScrape = document.getElementById('lastScrape');
-            var nextScrape = document.getElementById('nextScrape');
-            lastScrape.innerText = formatDateTime(now.toISOString());
-            var refreshInterval = parseInt(document.getElementById('refresh_interval').value);
-            nextScrape.innerText = formatDateTime(new Date(now.getTime() + refreshInterval * 3600000).toISOString());
         }
 
         document.getElementById('refreshButton').addEventListener('click', function() {
@@ -328,6 +295,21 @@
 
             localStorage.setItem('lastClickTime', now);
             refreshData();
+        });
+
+        document.getElementById('configForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            document.getElementById('configForm').classList.add('hidden');
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('pageTitle').innerText = 'Scraping';
+
+            setTimeout(function() {
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('results').classList.remove('hidden');
+                document.getElementById('pageTitle').innerText = 'Dashboard';
+                setInitialScrapeTimes();
+                generateVisualizations();
+            }, 5000);
         });
     </script>
 </body>
