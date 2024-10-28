@@ -280,18 +280,18 @@
         var currentPage = 1;
         var postsPerPage = 4;
         var topPosts = [
-            { platform: 'X', username: 'elonmusk', content: 'Excellent support!', reactions: 200, sentiment: 'Great' },
-            { platform: 'Instagram', username: 'zuck', content: 'Great product!', reactions: 150, sentiment: 'Good' },
-            { platform: 'Meta', username: 'DwayneJohnson', content: 'Average experience.', reactions: 75, sentiment: 'Bad' },
-            { platform: 'LinkedIn', username: 'baby-boss', content: 'Dissatisfied with the service.', reactions: 50, sentiment: 'Terrible' },
-            { platform: 'X', username: 'elonmusk', content: 'Amazing!', reactions: 180, sentiment: 'Great' },
-            { platform: 'Instagram', username: 'zuck', content: 'Loved it!', reactions: 140, sentiment: 'Good' },
-            { platform: 'Meta', username: 'DwayneJohnson', content: 'Not bad.', reactions: 70, sentiment: 'Bad' },
-            { platform: 'LinkedIn', username: 'baby-boss', content: 'Could be better.', reactions: 60, sentiment: 'Terrible' },
-            { platform: 'X', username: 'elonmusk', content: 'Fantastic!', reactions: 190, sentiment: 'Great' },
-            { platform: 'Instagram', username: 'zuck', content: 'Very good!', reactions: 160, sentiment: 'Good' },
-            { platform: 'Meta', username: 'DwayneJohnson', content: 'Okay.', reactions: 80, sentiment: 'Bad' },
-            { platform: 'LinkedIn', username: 'baby-boss', content: 'Not satisfied.', reactions: 55, sentiment: 'Terrible' }
+            { platform: 'X', username: 'elonmusk', content: 'Excellent support!', reactions: 200, sentiment: 'Great', sentimentScore: 0.9 },
+            { platform: 'Instagram', username: 'zuck', content: 'Great product!', reactions: 150, sentiment: 'Good', sentimentScore: 0.7 },
+            { platform: 'Meta', username: 'DwayneJohnson', content: 'Average experience.', reactions: 75, sentiment: 'Bad', sentimentScore: -0.2 },
+            { platform: 'LinkedIn', username: 'baby-boss', content: 'Dissatisfied with the service.', reactions: 50, sentiment: 'Terrible', sentimentScore: -0.8 },
+            { platform: 'X', username: 'elonmusk', content: 'Amazing!', reactions: 180, sentiment: 'Great', sentimentScore: 0.85 },
+            { platform: 'Instagram', username: 'zuck', content: 'Loved it!', reactions: 140, sentiment: 'Good', sentimentScore: 0.75 },
+            { platform: 'Meta', username: 'DwayneJohnson', content: 'Not bad.', reactions: 70, sentiment: 'Bad', sentimentScore: -0.1 },
+            { platform: 'LinkedIn', username: 'baby-boss', content: 'Could be better.', reactions: 60, sentiment: 'Terrible', sentimentScore: -0.6 },
+            { platform: 'X', username: 'elon', content: 'Fantastic!', reactions: 190, sentiment: 'Great', sentimentScore: 0.88 },
+            { platform: 'Instagram', username: 'mark', content: 'Very good!', reactions: 160, sentiment: 'Good', sentimentScore: 0.8 },
+            { platform: 'Meta', username: 'rock', content: 'Okay.', reactions: 80, sentiment: 'Bad', sentimentScore: -0.3 },
+            { platform: 'LinkedIn', username: 'baby', content: 'Not satisfied.', reactions: 55, sentiment: 'Terrible', sentimentScore: -0.7 }
         ];
 
         function getReplyLink(platform, username) {
@@ -308,13 +308,13 @@
                     return '#';
             }
         }
-    
-        function displayPosts(page) {
+
+        function displayPosts(posts, page) {
             var topPostsContainer = document.getElementById('topPosts');
             topPostsContainer.innerHTML = '';
             var start = (page - 1) * postsPerPage;
             var end = start + postsPerPage;
-            var paginatedPosts = topPosts.slice(start, end);
+            var paginatedPosts = posts.slice(start, end);
             paginatedPosts.forEach(function(post) {
                 var tile = document.createElement('div');
                 tile.className = 'tile';
@@ -328,20 +328,20 @@
                 topPostsContainer.appendChild(tile);
             });
             document.getElementById('prevArrow').classList.toggle('hidden', page === 1);
-            document.getElementById('nextArrow').classList.toggle('hidden', end >= topPosts.length);
+            document.getElementById('nextArrow').classList.toggle('hidden', end >= posts.length);
         }
-    
-        function nextPage() {
-            if (currentPage * postsPerPage < topPosts.length) {
+
+        function nextPage(posts) {
+            if (currentPage * postsPerPage < posts.length) {
                 currentPage++;
-                displayPosts(currentPage);
+                displayPosts(posts, currentPage);
             }
         }
-    
-        function prevPage() {
+
+        function prevPage(posts) {
             if (currentPage > 1) {
                 currentPage--;
-                displayPosts(currentPage);
+                displayPosts(posts, currentPage);
             }
         }
 
@@ -353,9 +353,32 @@
             // Display the top leads
             displayPosts(topLeads, currentPage);
         }
-    
-        displayPosts(currentPage);
-    
+
+        function toggleView() {
+            var toggleButton = document.getElementById('toggleButton');
+            if (toggleButton.innerText === 'Show Top Leads') {
+                toggleButton.innerText = 'Show Top Posts';
+                showTopLeads();
+            } else {
+                toggleButton.innerText = 'Show Top Leads';
+                displayPosts(topPosts, currentPage);
+            }
+        }
+
+        // Initial display of all posts
+        displayPosts(topPosts, currentPage);
+
+        // Add event listeners for pagination
+        document.getElementById('nextArrow').addEventListener('click', function() {
+            nextPage(topPosts);
+        });
+        document.getElementById('prevArrow').addEventListener('click', function() {
+            prevPage(topPosts);
+        });
+
+        // Add event listener for toggle button
+        document.getElementById('toggleButton').addEventListener('click', toggleView);
+
         document.getElementById('refreshButton').addEventListener('click', function() {
             var lastClickTime = localStorage.getItem('lastClickTime');
             var now = new Date().getTime();
@@ -366,7 +389,7 @@
             localStorage.setItem('lastClickTime', now);
             refreshData();
         });
-    
+
         document.getElementById('configForm').addEventListener('submit', function(event) {
             event.preventDefault();
             document.getElementById('configForm').classList.add('hidden');
@@ -380,9 +403,6 @@
                 generateVisualizations();
             }, 5000);
         });
-
-        showTopLeads();
-
     </script>
 
 </body>
