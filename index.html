@@ -344,6 +344,15 @@
                 displayPosts(currentPage);
             }
         }
+
+        function showTopLeads() {
+            // Sort posts by sentiment score in descending order
+            var sortedPosts = topPosts.sort((a, b) => b.sentimentScore - a.sentimentScore);
+            // Get the top 10% of posts
+            var topLeads = sortedPosts.slice(0, Math.ceil(sortedPosts.length * 0.1));
+            // Display the top leads
+            displayPosts(topLeads, currentPage);
+        }
     
         displayPosts(currentPage);
     
@@ -371,6 +380,8 @@
                 generateVisualizations();
             }, 5000);
         });
+
+        showTopLeads();
 
     </script>
 
