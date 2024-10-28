@@ -14,6 +14,7 @@
             user-select: none;
         }
 
+
         .hidden {
             display: none;
         }
@@ -162,10 +163,11 @@
         </div>
         <div class="top-posts-container">
             <h3>Top Posts</h3>
-            <div id="topPosts" class="top-posts"></div>
             <span id="prevArrow" class="arrow" onclick="prevPage()">◀</span>
+            <div id="topPosts" class="top-posts"></div>
             <span id="nextArrow" class="arrow" onclick="nextPage()">▶</span>
         </div>
+        
         
         <div>
             <p>Last Scrape: <span id="lastScrape"></span></p>
@@ -280,61 +282,58 @@
                 }
             };
             Plotly.newPlot('sentimentEvolution', sentimentEvolutionData, sentimentEvolutionLayout);
-
-            // Top Posts List
-            var topPosts = [
-                { platform: 'X', username: '@melonmusk', content: 'Excellent support!', reactions: 200, sentiment: 'Great' },
-                { platform: 'Instagram', username: '@zuck', content: 'Great product!', reactions: 150, sentiment: 'Good' },
-                { platform: 'Meta', username: '@therock', content: 'Average experience.', reactions: 75, sentiment: 'Bad' },
-                { platform: 'LinkedIn', username: '@babyboss', content: 'Dissatisfied with the service.', reactions: 50, sentiment: 'Terrible' },
-                { platform: 'X', username: '@elonmusk', content: 'Amazing!', reactions: 180, sentiment: 'Great' },
-                { platform: 'Instagram', username: '@zuckerberg', content: 'Loved it!', reactions: 140, sentiment: 'Good' },
-                { platform: 'Meta', username: '@therock', content: 'Not bad.', reactions: 70, sentiment: 'Bad' },
-                { platform: 'LinkedIn', username: '@bossbaby', content: 'Could be better.', reactions: 60, sentiment: 'Terrible' },
-                { platform: 'X', username: '@elon', content: 'Fantastic!', reactions: 190, sentiment: 'Great' },
-                { platform: 'Instagram', username: '@mark', content: 'Very good!', reactions: 160, sentiment: 'Good' },
-                { platform: 'Meta', username: '@rock', content: 'Okay.', reactions: 80, sentiment: 'Bad' },
-                { platform: 'LinkedIn', username: '@baby', content: 'Not satisfied.', reactions: 55, sentiment: 'Terrible' }
-            ];
-
-            var topPostsContainer = document.getElementById('topPosts');
-            var currentPage = 1;
-            var postsPerPage = 4;
-
-            function displayPosts(page) {
-                topPostsContainer.innerHTML = '';
-                var start = (page - 1) * postsPerPage;
-                var end = start + postsPerPage;
-                var paginatedPosts = topPosts.slice(start, end);
-
-                paginatedPosts.forEach(function(post) {
-                    var tile = document.createElement('div');
-                    tile.className = 'tile';
-                    tile.innerHTML = `<h4>${post.platform}</h4>
-                                    <p><strong>Username:</strong> ${post.username}</p>
-                                    <p><strong>Content:</strong> ${post.content}</p>
-                                    <p><strong>Reactions:</strong> ${post.reactions}</p>
-                                    <p><strong>Sentiment:</strong> ${post.sentiment}</p>`;
-                    topPostsContainer.appendChild(tile);
-                });
-
-                document.getElementById('prevArrow').classList.toggle('hidden', page === 1);
-                document.getElementById('nextArrow').classList.toggle('hidden', end >= topPosts.length);
-            }
-
-            function nextPage() {
-                currentPage++;
-                displayPosts(currentPage);
-            }
-
-            function prevPage() {
-                currentPage--;
-                displayPosts(currentPage);
-            }
-
-            displayPosts(currentPage);
-
         }
+
+        var currentPage = 1;
+        var postsPerPage = 4;
+        var topPosts = [
+            { platform: 'X', username: '@melonmusk', content: 'Excellent support!', reactions: 200, sentiment: 'Great' },
+            { platform: 'Instagram', username: '@zuck', content: 'Great product!', reactions: 150, sentiment: 'Good' },
+            { platform: 'Meta', username: '@therock', content: 'Average experience.', reactions: 75, sentiment: 'Bad' },
+            { platform: 'LinkedIn', username: '@babyboss', content: 'Dissatisfied with the service.', reactions: 50, sentiment: 'Terrible' },
+            { platform: 'X', username: '@elonmusk', content: 'Amazing!', reactions: 180, sentiment: 'Great' },
+            { platform: 'Instagram', username: '@zuckerberg', content: 'Loved it!', reactions: 140, sentiment: 'Good' },
+            { platform: 'Meta', username: '@therock', content: 'Not bad.', reactions: 70, sentiment: 'Bad' },
+            { platform: 'LinkedIn', username: '@bossbaby', content: 'Could be better.', reactions: 60, sentiment: 'Terrible' },
+            { platform: 'X', username: '@elon', content: 'Fantastic!', reactions: 190, sentiment: 'Great' },
+            { platform: 'Instagram', username: '@mark', content: 'Very good!', reactions: 160, sentiment: 'Good' },
+            { platform: 'Meta', username: '@rock', content: 'Okay.', reactions: 80, sentiment: 'Bad' },
+            { platform: 'LinkedIn', username: '@baby', content: 'Not satisfied.', reactions: 55, sentiment: 'Terrible' }
+        ];
+
+        function displayPosts(page) {
+            var topPostsContainer = document.getElementById('topPosts');
+            topPostsContainer.innerHTML = '';
+            var start = (page - 1) * postsPerPage;
+            var end = start + postsPerPage;
+            var paginatedPosts = topPosts.slice(start, end);
+
+            paginatedPosts.forEach(function(post) {
+                var tile = document.createElement('div');
+                tile.className = 'tile';
+                tile.innerHTML = `<h4>${post.platform}</h4>
+                                <p><strong>Username:</strong> ${post.username}</p>
+                                <p><strong>Content:</strong> ${post.content}</p>
+                                <p><strong>Reactions:</strong> ${post.reactions}</p>
+                                <p><strong>Sentiment:</strong> ${post.sentiment}</p>`;
+                topPostsContainer.appendChild(tile);
+            });
+
+            document.getElementById('prevArrow').classList.toggle('hidden', page === 1);
+            document.getElementById('nextArrow').classList.toggle('hidden', end >= topPosts.length);
+        }
+
+        function nextPage() {
+            currentPage++;
+            displayPosts(currentPage);
+        }
+
+        function prevPage() {
+            currentPage--;
+            displayPosts(currentPage);
+        }
+
+        displayPosts(currentPage);
 
         document.getElementById('refreshButton').addEventListener('click', function() {
             var lastClickTime = localStorage.getItem('lastClickTime');
