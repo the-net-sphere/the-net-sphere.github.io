@@ -175,7 +175,7 @@
                 <option value="custom">Custom Period</option>
             </select>
             <button id="refreshButton" onclick="refreshData()">Refresh</button>
-            <form id="createLeadForm">
+            <form id="createLeadForm" onsubmit="handleSubmit(event)">
                 <label for="leadName">Lead Name:</label>
                 <input type="text" id="leadName" name="leadName" required>
                 <label for="leadEmail">Lead Email:</label>
@@ -392,6 +392,15 @@
         function createLead(name, email) {
             // Implement your lead creation logic here
             console.log(`Lead created: ${name}, ${email}`);
+        }
+        function handleSubmit(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Display confirmation message
+            alert('Lead created successfully!');
+
+            // Clear form fields
+            document.getElementById('leadForm').reset();
         }
 
     </script>
