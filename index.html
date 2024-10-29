@@ -175,22 +175,15 @@
                 <option value="custom">Custom Period</option>
             </select>
             <button id="refreshButton" onclick="refreshData()">Refresh</button>
-            <!-- Add a button to fetch AI response suggestions -->
-            <button id="fetchSuggestions">View AI Response Suggestions</button>
-            <div id="suggestions"></div>
-            <div id="responseSection">
-                <button id="generateResponse">Generate Response</button>
-                <div id="response"></div>
-            </div>
+            <form id="createLeadForm">
+                <label for="leadName">Lead Name:</label>
+                <input type="text" id="leadName" name="leadName" required>
+                <label for="leadEmail">Lead Email:</label>
+                <input type="email" id="leadEmail" name="leadEmail" required>
+                <button type="submit">Create Lead</button>
+            </form>        
         </div>
     </div>
-    <form id="createLeadForm">
-        <label for="leadName">Lead Name:</label>
-        <input type="text" id="leadName" name="leadName" required>
-        <label for="leadEmail">Lead Email:</label>
-        <input type="email" id="leadEmail" name="leadEmail" required>
-        <button type="submit">Create Lead</button>
-    </form>
 
     <script>
         function formatDateTime(dateTimeStr) {
@@ -398,35 +391,6 @@
         function createLead(name, email) {
             // Implement your lead creation logic here
             console.log(`Lead created: ${name}, ${email}`);
-        }
-
-        document.getElementById('fetchSuggestions').addEventListener('click', function() {
-            // Function to fetch AI response suggestions
-            fetchSuggestions();
-        });
-
-        function fetchSuggestions() {
-            // Implement your logic to fetch AI response suggestions
-            // This could involve calling a Power Automate flow
-            console.log('Fetching AI response suggestions...');
-            // Example response
-            const suggestions = ['Suggestion 1', 'Suggestion 2', 'Suggestion 3'];
-            document.getElementById('suggestions').innerHTML = suggestions.join('<br>');
-        }
-
-        document.getElementById('generateResponse').addEventListener('click', function() {
-            // Function to generate response and link
-            generateResponse();
-        });
-
-        function generateResponse() {
-            // Implement your logic to generate the response
-            const responseText = 'Here is your response text. Copy and paste this into your comment.';
-            const commentLink = 'https://x.com/elonmusk';
-            document.getElementById('response').innerHTML = `
-            <p>${responseText}</p>
-            <a href="${commentLink}" target="_blank">Go to new comment</a>
-            `;
         }
 
     </script>
