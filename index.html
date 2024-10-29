@@ -181,7 +181,7 @@
                 <label for="leadEmail">Lead Email:</label>
                 <input type="email" id="leadEmail" name="leadEmail" required>
                 <button type="submit">Create Lead</button>
-            </form>        
+            </form>      
         </div>
     </div>
 
@@ -393,6 +393,7 @@
             // Implement your lead creation logic here
             console.log(`Lead created: ${name}, ${email}`);
         }
+
         function handleSubmit(event) {
             event.preventDefault(); // Prevent the default form submission
 
@@ -400,7 +401,7 @@
             alert('Lead created successfully!');
 
             // Clear form fields
-            document.getElementById('leadForm').reset();
+            document.getElementById('createLeadForm').reset();
         }
 
     </script>
