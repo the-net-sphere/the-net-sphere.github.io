@@ -23,9 +23,9 @@
     <table id="detailsTable">
         <thead>
             <tr>
-                <th>Column 1</th>
-                <th>Column 2</th>
-                <th>Column 3</th>
+                <th>Platform</th>
+                <th>User</th>
+                <th>Content</th>
             </tr>
         </thead>
         <tbody>
@@ -38,9 +38,9 @@
         function getUrlParams() {
             const params = new URLSearchParams(window.location.search);
             return {
-                Platform: params.get('column1'),
-                User: params.get('column2'),
-                Content: params.get('column3')
+                platform: params.get('column1'),
+                user: params.get('column2'),
+                content: params.get('column3')
             };
         }
 
