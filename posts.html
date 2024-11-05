@@ -16,6 +16,12 @@
         th {
             background-color: #f2f2f2;
         }
+        .button-container {
+            margin-top: 20px;
+        }
+        button {
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -32,6 +38,16 @@
             <!-- Table rows will be inserted here by JavaScript -->
         </tbody>
     </table>
+
+    <div class="button-container">
+        <button id="generateResponseButton">Generate AI Response</button>
+        <button id="createLeadButton">Create Lead</button>
+    </div>
+
+    <div id="responseContainer" style="margin-top: 20px;">
+        <textarea id="aiResponse" rows="4" cols="50">Sample answer</textarea>
+        <button id="copyResponseButton">Copy to Clipboard</button>
+    </div>
 
     <script>
         // Function to get URL parameters
@@ -59,6 +75,32 @@
         // Get URL parameters and create table row
         const params = getUrlParams();
         createTableRow(params);
+
+        // Function to generate AI response
+        function generateAIResponse() {
+            const responseContainer = document.getElementById('responseContainer');
+            const aiResponse = document.getElementById('aiResponse');
+            aiResponse.value = "This is a generated AI response based on the content: " + params.content;
+            responseContainer.style.display = 'block';
+        }
+
+        // Function to copy AI response to clipboard
+        function copyToClipboard() {
+            const aiResponse = document.getElementById('aiResponse');
+            aiResponse.select();
+            document.execCommand('copy');
+            alert('AI response copied to clipboard!');
+        }
+
+        // Function to create a lead
+        function createLead() {
+            alert('Lead creation functionality is not implemented yet.');
+        }
+
+        // Add event listeners to buttons
+        document.getElementById('generateResponseButton').addEventListener('click', generateAIResponse);
+        document.getElementById('copyResponseButton').addEventListener('click', copyToClipboard);
+        document.getElementById('createLeadButton').addEventListener('click', createLead);
     </script>
 </body>
 </html>
