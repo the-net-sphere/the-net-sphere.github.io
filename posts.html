@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Details</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Post Details</h1>
+    <table id="detailsTable">
+        <thead>
+            <tr>
+                <th>Column 1</th>
+                <th>Column 2</th>
+                <th>Column 3</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Table rows will be inserted here by JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        // Function to get URL parameters
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                column1: params.get('column1'),
+                column2: params.get('column2'),
+                column3: params.get('column3')
+            };
+        }
+
+        // Function to create table row
+        function createTableRow(data) {
+            const tableBody = document.querySelector('#detailsTable tbody');
+            const row = document.createElement('tr');
+            Object.values(data).forEach(value => {
+                const cell = document.createElement('td');
+                cell.textContent = decodeURIComponent(value);
+                row.appendChild(cell);
+            });
+            tableBody.appendChild(row);
+        }
+
+        // Get URL parameters and create table row
+        const params = getUrlParams();
+        createTableRow(params);
+    </script>
+</body>
+</html>
