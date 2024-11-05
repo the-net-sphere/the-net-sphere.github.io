@@ -40,10 +40,12 @@
     </table>
 
     <div class="button-container">
-        <label for="apiKey">API Key:</label>
-        <input type="text" id="apiKey" placeholder="Enter API Key">
+        <label for="apiKey">OpenAI API Key:</label>
+        <input type="text" id="apiKey" placeholder="Enter OpenAI API Key">
         <label for="dynamicsUrl">Dynamics URL:</label>
         <input type="text" id="dynamicsUrl" placeholder="Enter Dynamics URL">
+        <label for="dynamicsToken">Dynamics Access Token:</label>
+        <input type="text" id="dynamicsToken" placeholder="Enter Dynamics Access Token">
         <button id="generateResponseButton">Generate AI Response</button>
         <button id="createLeadButton">Create Lead</button>
     </div>
@@ -84,7 +86,7 @@
         async function generateAIResponse() {
             const apiKey = document.getElementById('apiKey').value;
             if (!apiKey) {
-                alert('Please enter your API key.');
+                alert('Please enter your OpenAI API key.');
                 return;
             }
 
@@ -105,7 +107,7 @@
                                 content: [
                                     {
                                         type: 'text',
-                                        text: `The user said: '${params.content}'\nSentiment: ${params.sentiment}\n\nRespond appropriately to the user's comment based on their sentiment and content as the service or product provider for the product or service the user mentioned.`
+                                        text: `The user said: '${params.content}'\n\nRespond appropriately to the user's comment based on their content as the service or product provider for the product or service the user mentioned.`
                                     }
                                 ]
                             }
@@ -140,8 +142,9 @@
         // Function to create a lead in Dynamics 365
         async function createLead() {
             const dynamicsUrl = document.getElementById('dynamicsUrl').value;
-            if (!dynamicsUrl) {
-                alert('Please enter your Dynamics URL.');
+            const dynamicsToken = document.getElementById('dynamicsToken').value;
+            if (!dynamicsUrl || !dynamicsToken) {
+                alert('Please enter your Dynamics URL and Access Token.');
                 return;
             }
 
@@ -157,7 +160,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + document.getElementById('apiKey').value
+                        'Authorization': 'Bearer ' + dynamicsToken
                     },
                     body: JSON.stringify(leadData)
                 });
@@ -179,7 +182,6 @@
         document.getElementById('generateResponseButton').addEventListener('click', generateAIResponse);
         document.getElementById('copyResponseButton').addEventListener('click', copyToClipboard);
         document.getElementById('createLeadButton').addEventListener('click', createLead);
-
     </script>
 </body>
 </html>
