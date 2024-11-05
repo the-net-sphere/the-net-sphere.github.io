@@ -3,48 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Power BI Report with Access Token</title>
-    <script src="https://cdn.jsdelivr.net/npm/powerbi-client@2.13.0/dist/powerbi.js"></script>
+    <title>Power BI Report</title>
 </head>
 <body>
-    <form id="tokenForm">
-        <label for="accessToken">Enter Access Token:</label>
-        <input type="text" id="accessToken" name="accessToken" required>
-        <button type="submit">Submit</button>
-    </form>
-    <div id="reportContainer" style="height: 600px; width: 1140px;"></div>
-
-    <script>
-        document.getElementById('tokenForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            var accessToken = document.getElementById('accessToken').value;
-
-            var embedConfig = {
-                type: 'report',
-                id: '82f2fff6-88dc-4ecb-a68f-3d65d859a759',
-                embedUrl: 'https://app.powerbi.com/reportEmbed?reportId=82f2fff6-88dc-4ecb-a68f-3d65d859a759&autoAuth=true&ctid=01c79161-4c7f-481e-8511-d45615e6f78d',
-                accessToken: accessToken,
-                tokenType: models.TokenType.Embed,
-                settings: {
-                    filterPaneEnabled: false,
-                    navContentPaneEnabled: false
-                }
-            };
-
-            var reportContainer = document.getElementById('reportContainer');
-            var report = powerbi.embed(reportContainer, embedConfig);
-
-            report.on('loaded', function() {
-                report.getActivePage().then(function(page) {
-                    console.log('Active page:', page.displayName);
-                });
-            });
-
-            report.on('pageChanged', function(event) {
-                var newPage = event.detail.newPage;
-                console.log('New active page:', newPage.displayName);
-            });
-        });
-    </script>
+    <iframe title="dashboard" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=82f2fff6-88dc-4ecb-a68f-3d65d859a759&autoAuth=true&ctid=01c79161-4c7f-481e-8511-d45615e6f78d" frameborder="0" allowFullScreen="true"></iframe>
 </body>
 </html>
