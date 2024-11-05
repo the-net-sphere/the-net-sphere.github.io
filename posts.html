@@ -32,6 +32,7 @@
                 <th>Platform</th>
                 <th>User</th>
                 <th>Content</th>
+                <th>Sentiment</th>
             </tr>
         </thead>
         <tbody>
@@ -42,6 +43,8 @@
     <div class="button-container">
         <label for="apiKey">API Key:</label>
         <input type="text" id="apiKey" placeholder="Enter API Key">
+        <label for="dynamicsUrl">Dynamics URL:</label>
+        <input type="text" id="dynamicsUrl" placeholder="Enter Dynamics URL">
         <button id="generateResponseButton">Generate AI Response</button>
         <button id="createLeadButton">Create Lead</button>
     </div>
@@ -58,7 +61,8 @@
             return {
                 platform: params.get('column1'),
                 user: params.get('column2'),
-                content: params.get('column3')
+                content: params.get('column3'),
+                sentiment: params.get('column4')
             };
         }
 
@@ -135,9 +139,41 @@
             alert('AI response copied to clipboard!');
         }
 
-        // Function to create a lead
-        function createLead() {
-            alert('Lead creation functionality is not implemented yet.');
+        // Function to create a lead in Dynamics 365
+        async function createLead() {
+            const dynamicsUrl = document.getElementById('dynamicsUrl').value;
+            if (!dynamicsUrl) {
+                alert('Please enter your Dynamics URL.');
+                return;
+            }
+
+            const leadData = {
+                "subject": "New Lead from Website",
+                "firstname": params.user,
+                "description": params.content,
+                "leadsourcecode": 3 // Example value, adjust as needed
+            };
+
+            try {
+                const response = await fetch(`${dynamicsUrl}/api/data/v9.1/leads`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + document.getElementById('apiKey').value
+                    },
+                    body: JSON.stringify(leadData)
+                });
+
+                if (response.ok) {
+                    alert('Lead created successfully!');
+                } else {
+                    const errorData = await response.json();
+                    alert('Failed to create lead: ' + errorData.error.message);
+                }
+            } catch (error) {
+                console.error('Error creating lead:', error);
+                alert('Error creating lead.');
+            }
         }
 
         // Add event listeners to buttons
