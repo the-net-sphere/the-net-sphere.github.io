@@ -166,6 +166,7 @@
                     alert('Lead created successfully!');
                 } else {
                     const errorData = await response.json();
+                    console.error('Error creating lead:', errorData);
                     alert('Failed to create lead: ' + errorData.error.message);
                 }
             } catch (error) {
