@@ -113,9 +113,9 @@
         detailsTiles.appendChild(createTile('User', params.user));
         detailsTiles.appendChild(createTile('Translation', params.translation));
         detailsTiles.appendChild(createTile('Datetime', params.datetime));
-        detailsTiles.appendChild(createTile('Reactions', params.reactions));
-        detailsTiles.appendChild(createTile('Comments', params.comments));
-        detailsTiles.appendChild(createTile('Hashtags', params.hashtags));
+        detailsTiles.appendChild(createTile('Reactions', params.reactions || 'N/A'));
+        detailsTiles.appendChild(createTile('Comments', params.comments || 'N/A'));
+        detailsTiles.appendChild(createTile('Hashtags', params.hashtags || 'N/A'));
 
         // Function to generate AI response
         async function generateAIResponse() {
