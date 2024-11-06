@@ -91,7 +91,7 @@
 
             const keys = ['platform', 'user', 'translation', 'datetime', 'reactions', 'comments', 'hashtags'];
             keys.forEach((key, index) => {
-                const start = url.indexOf(`&${key}=`) + key.length + 2;
+                const start = url.indexOf(`${key}=`) + key.length + 1;
                 const end = index < keys.length - 1 ? url.indexOf(`&${keys[index + 1]}=`) : url.length;
                 params[key] = url.substring(start, end);
             });
