@@ -86,16 +86,17 @@
     <script>
         // Function to get URL parameters
         function getUrlParams() {
-            const params = new URLSearchParams(window.location.search);
-            return {
-                platform: params.get('platform'),
-                user: params.get('user'),
-                translation: params.get('translation'),
-                datetime: params.get('datetime'),
-                reactions: params.get('reactions'),
-                comments: params.get('comments'),
-                hashtags: params.get('hashtags')
-            };
+            const url = window.location.search;
+            const params = {};
+
+            const keys = ['platform', 'user', 'translation', 'datetime', 'reactions', 'comments', 'hashtags'];
+            keys.forEach((key, index) => {
+                const start = url.indexOf(`&${key}=`) + key.length + 2;
+                const end = index < keys.length - 1 ? url.indexOf(`&${keys[index + 1]}=`) : url.length;
+                params[key] = url.substring(start, end);
+            });
+
+            return params;
         }
 
         // Function to create tile
