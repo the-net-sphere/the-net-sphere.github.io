@@ -5,16 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Post Details</title>
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+            margin: auto;
         }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-        th {
-            background-color: #f2f2f2;
+        label, input {
+            margin-bottom: 10px;
         }
         .button-container {
             margin-top: 20px;
@@ -26,18 +24,28 @@
 </head>
 <body>
     <h1>Post Details</h1>
-    <table id="detailsTable">
-        <thead>
-            <tr>
-                <th>Platform</th>
-                <th>User</th>
-                <th>Content</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Table rows will be inserted here by JavaScript -->
-        </tbody>
-    </table>
+    <form id="detailsForm">
+        <label for="platform">Platform:</label>
+        <input type="text" id="platform" name="platform" readonly>
+        
+        <label for="user">User:</label>
+        <input type="text" id="user" name="user" readonly>
+        
+        <label for="translation">Translation:</label>
+        <input type="text" id="translation" name="translation" readonly>
+        
+        <label for="datetime">Datetime:</label>
+        <input type="text" id="datetime" name="datetime" readonly>
+        
+        <label for="reactions">Reactions:</label>
+        <input type="text" id="reactions" name="reactions" readonly>
+        
+        <label for="comments">Comments:</label>
+        <input type="text" id="comments" name="comments" readonly>
+        
+        <label for="hashtags">Hashtags:</label>
+        <input type="text" id="hashtags" name="hashtags" readonly>
+    </form>
 
     <div class="button-container">
         <label for="apiKey">OpenAI API Key:</label>
@@ -60,27 +68,30 @@
         function getUrlParams() {
             const params = new URLSearchParams(window.location.search);
             return {
-                platform: params.get('column1'),
-                user: params.get('column2'),
-                content: params.get('column3'),
+                platform: params.get('platform'),
+                user: params.get('user'),
+                translation: params.get('translation'),
+                datetime: params.get('datetime'),
+                reactions: params.get('reactions'),
+                comments: params.get('comments'),
+                hashtags: params.get('hashtags')
             };
         }
 
-        // Function to create table row
-        function createTableRow(data) {
-            const tableBody = document.querySelector('#detailsTable tbody');
-            const row = document.createElement('tr');
-            Object.values(data).forEach(value => {
-                const cell = document.createElement('td');
-                cell.textContent = decodeURIComponent(value);
-                row.appendChild(cell);
-            });
-            tableBody.appendChild(row);
+        // Function to populate form fields
+        function populateForm(data) {
+            document.getElementById('platform').value = decodeURIComponent(data.platform);
+            document.getElementById('user').value = decodeURIComponent(data.user);
+            document.getElementById('translation').value = decodeURIComponent(data.translation);
+            document.getElementById('datetime').value = decodeURIComponent(data.datetime);
+            document.getElementById('reactions').value = decodeURIComponent(data.reactions);
+            document.getElementById('comments').value = decodeURIComponent(data.comments);
+            document.getElementById('hashtags').value = decodeURIComponent(data.hashtags);
         }
 
-        // Get URL parameters and create table row
+        // Get URL parameters and populate form
         const params = getUrlParams();
-        createTableRow(params);
+        populateForm(params);
 
         // Function to generate AI response
         async function generateAIResponse() {
