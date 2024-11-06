@@ -112,10 +112,10 @@
         detailsTiles.appendChild(createTile('Platform', params.platform));
         detailsTiles.appendChild(createTile('User', params.user));
         detailsTiles.appendChild(createTile('Translation', params.translation));
-        detailsTiles.appendChild(createTile('Datetime', params.datetime || 'N/A'));
-        detailsTiles.appendChild(createTile('Reactions', params.reactions !== null ? params.reactions : 'N/A'));
-        detailsTiles.appendChild(createTile('Comments', params.comments !== null ? params.comments : 'N/A'));
-        detailsTiles.appendChild(createTile('Hashtags', params.hashtags || 'No hashtags'));
+        detailsTiles.appendChild(createTile('Datetime', params.datetime)); //|| 'N/A'));
+        detailsTiles.appendChild(createTile('Reactions', params.reactions)); //!== null ? params.reactions : 'N/A'));
+        detailsTiles.appendChild(createTile('Comments', params.comments)); //!== null ? params.comments : 'N/A'));
+        detailsTiles.appendChild(createTile('Hashtags', params.hashtags)); //|| 'No hashtags'));
 
         // Function to generate AI response
         async function generateAIResponse() {
