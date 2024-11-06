@@ -184,11 +184,18 @@
                 return;
             }
 
+            // Split user into first name and last name
+            const userParts = decodeURIComponent(params.user).split('%20');
+            const firstName = userParts[0];
+            const lastName = userParts.slice(1).join(' ');
+
+            // Create lead data
             const leadData = {
-                "subject": "New Lead from Website",
-                "firstname": params.user,
-                "description": params.translation,
-                "leadsourcecode": 3 // Example value, adjust as needed
+                "companyname": decodeURIComponent(params.platform),
+                "firstname": firstName,
+                "lastname": lastName,
+                "description": decodeURIComponent(params.translation).replace(/%20/g, ' '),
+                "subject": `Lead from ${params.datetime} has ${params.reactions} reactions, ${params.comments} comments and the following hashtags: ${params.hashtags}`
             };
 
             try {
