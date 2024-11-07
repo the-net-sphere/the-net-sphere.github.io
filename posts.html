@@ -106,18 +106,31 @@
             return tile;
         }
 
+        // Function to create Instagram profile URL
+        async function getInstagramProfileUrl(userId) {
+            let api = `https://i.instagram.com/api/v1/users/${userId}/info/`;
+            let info = await (await fetch(api)).json();
+            return `https://www.instagram.com/${info.user.username}`;
+        }
+
         // Get URL parameters and create tiles
         const params = getUrlParams();
         const detailsTiles = document.getElementById('detailsTiles');
         detailsTiles.appendChild(createTile('Platform', params.platform));
         detailsTiles.appendChild(createTile('User', params.user));
         detailsTiles.appendChild(createTile('Translation', params.translation));
-        detailsTiles.appendChild(createTile('Datetime', params.datetime)); //|| 'N/A'));
-        detailsTiles.appendChild(createTile('Reactions', params.reactions)); //!== null ? params.reactions : 'N/A'));
-        detailsTiles.appendChild(createTile('Comments', params.comments)); //!== null ? params.comments : 'N/A'));
-        detailsTiles.appendChild(createTile('Hashtags', params.hashtags)); //|| 'No hashtags'));
-        detailsTiles.appendChild(createTile('Link', params.platform + '.com'));
+        detailsTiles.appendChild(createTile('Datetime', params.datetime));
+        detailsTiles.appendChild(createTile('Reactions', params.reactions));
+        detailsTiles.appendChild(createTile('Comments', params.comments));
+        detailsTiles.appendChild(createTile('Hashtags', params.hashtags));
 
+        // Create Instagram profile URL tile
+        if (params.platform === 'instagram') {
+            getInstagramProfileUrl(params.user).then(profileUrl => {
+                detailsTiles.appendChild(createTile('Profile URL', profileUrl));
+            });
+        }
+        
         // Function to generate AI response
         async function generateAIResponse() {
             const apiKey = document.getElementById('apiKey').value;
