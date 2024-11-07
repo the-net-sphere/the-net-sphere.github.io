@@ -106,13 +106,42 @@
             return tile;
         }
 
-        // Function to create Instagram profile URL
-        async function getInstagramProfileUrl(userId) {
-            let api = `https://i.instagram.com/api/v1/users/${userId}/info/`;
-            let info = await (await fetch(api)).json();
-            return `https://www.instagram.com/${info.user.username}`;
+        // Function to fetch Instagram profile URL based on the user ID
+        async function insta(uid) {
+            const api = `https://i.instagram.com/api/v1/users/${uid}/info/`;
+            try {
+                const response = await fetch(api);
+                const info = await response.json();
+                return `https://www.instagram.com/${info.user.username}`;
+            } catch (error) {
+                console.error("Error fetching Instagram profile:", error);
+                return null;
+            }
         }
-
+        
+        // Function to create platform-specific URL tile (Instagram handling)
+        async function createPlatformUrlTile(platform, userId) {
+            let url = '';
+        
+            if (platform === 'Instagram') {
+                // Fetch Instagram URL using user ID
+                url = await insta(userId);
+            } else if (platform === 'LinkedIn') {
+                url = `https://www.linkedin.com/in/${userId}`;
+            } else if (platform === 'Meta') {
+                url = `https://www.facebook.com/${userId}`;
+            } else if (platform === 'X') {
+                url = `https://x.com/${userId}`;
+            }
+        
+            // If URL is valid, create the tile
+            if (url) {
+                return createTile('Post URL', url);
+            } else {
+                return createTile('Post URL', 'Error fetching URL');
+            }
+        }
+        
         // Get URL parameters and create tiles
         const params = getUrlParams();
         const detailsTiles = document.getElementById('detailsTiles');
@@ -123,13 +152,12 @@
         detailsTiles.appendChild(createTile('Reactions', params.reactions));
         detailsTiles.appendChild(createTile('Comments', params.comments));
         detailsTiles.appendChild(createTile('Hashtags', params.hashtags));
+        
+        // Create platform-specific URL tile, with Instagram handling
+        createPlatformUrlTile(params.platform, params.user).then(urlTile => {
+            detailsTiles.appendChild(urlTile);
+        });
 
-        // Create Instagram profile URL tile
-        if (params.platform === 'instagram') {
-            getInstagramProfileUrl(params.user).then(profileUrl => {
-                detailsTiles.appendChild(createTile('Profile URL', profileUrl));
-            });
-        }
         
         // Function to generate AI response
         async function generateAIResponse() {
