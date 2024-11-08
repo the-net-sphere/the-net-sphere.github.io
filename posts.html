@@ -89,12 +89,10 @@
     <script>
         function getUrlParams() {
             const params = {};
-            const queryString = window.location.search;
-        
-            // Use URLSearchParams to handle parameter parsing more reliably
+            const queryString = window.location.search.substring(1);
             const urlParams = new URLSearchParams(queryString);
         
-            // Retrieve each parameter or default to 'None' if not found
+            // Get each parameter and assign or use 'None' as default
             params['platform'] = urlParams.get('platform') || 'None';
             params['user'] = urlParams.get('user') || 'None';
             params['translation'] = urlParams.get('translation') || 'None';
@@ -105,6 +103,7 @@
         
             return params;
         }
+
 
         // Function to create tile
         function createTile(title, content) {
