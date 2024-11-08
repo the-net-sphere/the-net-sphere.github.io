@@ -109,14 +109,13 @@
             return tile;
         }
 
-        // Function to create platform-specific URL tile (Instagram handling)
-        function createPlatformUrlTile(platform, userId) {
+        // Function to create post URL
+        function createPostUrl(platform, userId) {
             let url = '';
 
             if (platform === 'Instagram') {
-                // Use the Instagram ID to URL segment library to get the username
-                const urlSegment = InstagramIdToUrlSegment(userId); // Converts Instagram ID to URL segment
-                url = `https://www.instagram.com/${urlSegment}`; // Create the Instagram URL
+                const urlSegment = InstagramIdToUrlSegment(userId);
+                url = `https://www.instagram.com/${urlSegment}`;
             } else if (platform === 'LinkedIn') {
                 url = `https://www.linkedin.com/in/${userId}`;
             } else if (platform === 'Meta') {
@@ -125,12 +124,7 @@
                 url = `https://x.com/${userId}`;
             }
 
-            // If URL is valid, create the tile
-            if (url) {
-                return createTile('Post URL', url);
-            } else {
-                return createTile('Post URL', 'Error fetching URL');
-            }
+            return url;
         }
 
         // Get URL parameters and create tiles
@@ -143,11 +137,8 @@
         detailsTiles.appendChild(createTile('Reactions', params.reactions));
         detailsTiles.appendChild(createTile('Comments', params.comments));
         detailsTiles.appendChild(createTile('Hashtags', params.hashtags));
+        detailsTiles.appendChild(createTile('Post URL', createPostUrl(params.platform, params.user))); // Create platform-specific URL tile, with Instagram handling
 
-        // Create platform-specific URL tile, with Instagram handling
-        createPlatformUrlTile(params.platform, params.user).then(urlTile => {
-            detailsTiles.appendChild(urlTile);
-        });
 
         // Function to generate AI response
         async function generateAIResponse() {
