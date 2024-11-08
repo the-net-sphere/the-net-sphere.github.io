@@ -95,8 +95,18 @@
             let match;
 
             while (match = regex.exec(queryString)) {
-                params[decodeURIComponent(match[1])] = decodeURIComponent(match[2]);
+                const key = decodeURIComponent(match[1]);
+                const value = decodeURIComponent(match[2]) || 'None';
+                params[key] = value;
             }
+
+            // Ensure all expected parameters are present
+            const expectedParams = ['platform', 'user', 'translation', 'datetime', 'reactions', 'comments', 'hashtags'];
+            expectedParams.forEach(param => {
+                if (!params[param]) {
+                    params[param] = 'None';
+                }
+            });
 
             return params;
         }
