@@ -91,25 +91,28 @@
         function getUrlParams() {
             const params = {};
             const queryString = window.location.search.substring(1);
-            const regex = /(?:^|&)(platform|user|translation|datetime|reactions|comments|hashtags)=([^&]*)/gi;
-            let match;
-
-            while (match = regex.exec(queryString)) {
-                const key = decodeURIComponent(match[1]);
-                const value = decodeURIComponent(match[2]) || 'None';
-                params[key] = value;
-            }
-
-            // Ensure all expected parameters are present
-            const expectedParams = ['platform', 'user', 'translation', 'datetime', 'reactions', 'comments', 'hashtags'];
-            expectedParams.forEach(param => {
-                if (!params[param]) {
-                    params[param] = 'None';
-                }
-            });
-
+            
+            // Split the queryString by each parameter separator
+            const platformSplit = queryString.split('platform=');
+            const userSplit = platformSplit[1] ? platformSplit[1].split('&user=') : [];
+            const translationSplit = userSplit[1] ? userSplit[1].split('&translation=') : [];
+            const datetimeSplit = translationSplit[1] ? translationSplit[1].split('&datetime=') : [];
+            const reactionsSplit = datetimeSplit[1] ? datetimeSplit[1].split('&reactions=') : [];
+            const commentsSplit = reactionsSplit[1] ? reactionsSplit[1].split('&comments=') : [];
+            const hashtagsSplit = commentsSplit[1] ? commentsSplit[1].split('&hashtags=') : [];
+            
+            // Assign each split result to the params object or 'None' if it doesn't exist
+            params['platform'] = userSplit[0] || 'None';
+            params['user'] = translationSplit[0] || 'None';
+            params['translation'] = datetimeSplit[0] || 'None';
+            params['datetime'] = reactionsSplit[0] || 'None';
+            params['reactions'] = commentsSplit[0] || 'None';
+            params['comments'] = hashtagsSplit[0] || 'None';
+            params['hashtags'] = hashtagsSplit[1] || 'None';
+        
             return params;
         }
+
 
         // Function to create tile
         function createTile(title, content) {
