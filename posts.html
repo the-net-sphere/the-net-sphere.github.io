@@ -91,8 +91,8 @@
         function getUrlParams() {
             const params = {};
             const queryString = window.location.search.substring(1);
-            
-            // Split the queryString by each parameter separator
+        
+            // Split the query string by each parameter separator
             const platformSplit = queryString.split('platform=');
             const userSplit = platformSplit[1] ? platformSplit[1].split('&user=') : [];
             const translationSplit = userSplit[1] ? userSplit[1].split('&translation=') : [];
@@ -100,18 +100,19 @@
             const reactionsSplit = datetimeSplit[1] ? datetimeSplit[1].split('&reactions=') : [];
             const commentsSplit = reactionsSplit[1] ? reactionsSplit[1].split('&comments=') : [];
             const hashtagsSplit = commentsSplit[1] ? commentsSplit[1].split('&hashtags=') : [];
-            
-            // Assign each split result to the params object or 'None' if it doesn't exist
-            params['platform'] = userSplit[0] || 'None';
-            params['user'] = translationSplit[0] || 'None';
-            params['translation'] = datetimeSplit[0] || 'None';
-            params['datetime'] = reactionsSplit[0] || 'None';
-            params['reactions'] = commentsSplit[0] || 'None';
-            params['comments'] = hashtagsSplit[0] || 'None';
-            params['hashtags'] = hashtagsSplit[1] || 'None';
+        
+            // Decode each value and assign to params object or 'None' if it doesn't exist
+            params['platform'] = decodeURIComponent(userSplit[0]) || 'None';
+            params['user'] = decodeURIComponent(translationSplit[0]) || 'None';
+            params['translation'] = decodeURIComponent(datetimeSplit[0]) || 'None';
+            params['datetime'] = decodeURIComponent(reactionsSplit[0]) || 'None';
+            params['reactions'] = decodeURIComponent(commentsSplit[0]) || 'None';
+            params['comments'] = decodeURIComponent(hashtagsSplit[0]) || 'None';
+            params['hashtags'] = decodeURIComponent(hashtagsSplit[1]) || 'None';
         
             return params;
         }
+
 
 
         // Function to create tile
