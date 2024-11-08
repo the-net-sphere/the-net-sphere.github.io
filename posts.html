@@ -87,33 +87,24 @@
     </div>
 
     <script>
-        // Function to get URL parameters
         function getUrlParams() {
             const params = {};
-            const queryString = window.location.search.substring(1);
+            const queryString = window.location.search;
         
-            // Split the query string by each parameter separator
-            const platformSplit = queryString.split('platform=');
-            const userSplit = platformSplit[1] ? platformSplit[1].split('&user=') : [];
-            const translationSplit = userSplit[1] ? userSplit[1].split('&translation=') : [];
-            const datetimeSplit = translationSplit[1] ? translationSplit[1].split('&datetime=') : [];
-            const reactionsSplit = datetimeSplit[1] ? datetimeSplit[1].split('&reactions=') : [];
-            const commentsSplit = reactionsSplit[1] ? reactionsSplit[1].split('&comments=') : [];
-            const hashtagsSplit = commentsSplit[1] ? commentsSplit[1].split('&hashtags=') : [];
+            // Use URLSearchParams to handle parameter parsing more reliably
+            const urlParams = new URLSearchParams(queryString);
         
-            // Decode each value and assign to params object or 'None' if it doesn't exist
-            params['platform'] = decodeURIComponent(userSplit[0]) || 'None';
-            params['user'] = decodeURIComponent(translationSplit[0]) || 'None';
-            params['translation'] = decodeURIComponent(datetimeSplit[0]) || 'None';
-            params['datetime'] = decodeURIComponent(reactionsSplit[0]) || 'None';
-            params['reactions'] = decodeURIComponent(commentsSplit[0]) || 'None';
-            params['comments'] = decodeURIComponent(hashtagsSplit[0]) || 'None';
-            params['hashtags'] = decodeURIComponent(hashtagsSplit[1]) || 'None';
+            // Retrieve each parameter or default to 'None' if not found
+            params['platform'] = urlParams.get('platform') || 'None';
+            params['user'] = urlParams.get('user') || 'None';
+            params['translation'] = urlParams.get('translation') || 'None';
+            params['datetime'] = urlParams.get('datetime') || 'None';
+            params['reactions'] = urlParams.get('reactions') || 'None';
+            params['comments'] = urlParams.get('comments') || 'None';
+            params['hashtags'] = urlParams.get('hashtags') || 'None';
         
             return params;
         }
-
-
 
         // Function to create tile
         function createTile(title, content) {
