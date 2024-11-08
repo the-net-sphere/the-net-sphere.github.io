@@ -117,11 +117,14 @@
                 const urlSegment = InstagramIdToUrlSegment(userId);
                 url = `https://www.instagram.com/${urlSegment}`;
             } else if (platform === 'LinkedIn') {
-                url = `https://www.linkedin.com/in/${userId}`;
+                const userIdWithDashes = userId.replace(/ /g, '-');
+                url = `https://www.linkedin.com/in/${userIdWithDashes}`;
             } else if (platform === 'Meta') {
-                url = `https://www.facebook.com/${userId}`;
+                const userIdWithDots = userId.replace(/ /g, '.');
+                url = `https://www.facebook.com/${userIdWithDots}`;
             } else if (platform === 'X') {
-                url = `https://x.com/${userId}`;
+                const userIdWithoutFirstChar = userId.substring(1);
+                url = `https://x.com/${userIdWithoutFirstChar}`;
             }
 
             return url;
