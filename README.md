@@ -2,7 +2,7 @@
 
 ## Credentials
 
-Please provide the following environment files
+Please provide the following environment files:
 - Instagram
   - instagram.env
     - session_id
